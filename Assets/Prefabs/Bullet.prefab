@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7767945454978911253}
   m_Layer: 5
   m_Name: Bullet
-  m_TagString: Untagged
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -88,7 +88,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -127,4 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bdf1cfa4eb1664c89bd0c9a0002c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletData: {fileID: 0}
+  bulletData:
+    bulletSpeed: 0
+    bulletPower: 0
+    loadingTime: 0
+    bulletType: 0
