@@ -38,7 +38,7 @@ public class EnemyController : MonoBehaviour
 
     void Update() {
         transform.Translate(0, -0.01f, 0);
-        if (transform.localPosition.y < -1500) {
+        if (transform.localPosition.y < -3000) {
             Destroy(gameObject);
         }
     }
@@ -89,6 +89,13 @@ public class EnemyController : MonoBehaviour
         floatingDamage.DisplayFloatingDamage(bulletPower);
     }
 
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    /// <param name="playerController"></param>
+    /// <param name="bulletData"></param>
+    /// <param name="enemyData"></param>
+    /// <param name="bulletPrefab"></param>
 
     public void Inisialize(PlayerController playerController, BulletDataSO.BulletData bulletData, EnemyDataSO.EnemyData enemyData, Bullet bulletPrefab = null)
     {
@@ -96,11 +103,12 @@ public class EnemyController : MonoBehaviour
 
         this.playerController = playerController;
         this.enemyData = enemyData;
-        this.bulletPrefab = bulletPrefab;
-
+        
         if (bulletPrefab != null) {
 
-            //
+            this.bulletPrefab = bulletPrefab;
+
+            // 弾の自動生成          
             StartCoroutine(EnemyShot(bulletData));
         }
 
@@ -109,15 +117,24 @@ public class EnemyController : MonoBehaviour
         moveEvent.Invoke(transform);
     }
 
+    /// <summary>
+    /// 弾の自動生成
+    /// </summary>
+    /// <param name="bulletData"></param>
+    /// <returns></returns>
     private IEnumerator EnemyShot(BulletDataSO.BulletData bulletData) {
-
+                
         while (true) {
-            Instantiate(bulletPrefab, transform).Shot(bulletData, GetPlayerDirection());
-
+            Bullet bullet = Instantiate(bulletPrefab, transform);
+            bullet.Shot(bulletData, GetPlayerDirection());
             yield return new WaitForSeconds(bulletData.loadingTime);
         }
     }
 
+    /// <summary>
+    /// プレイヤーとエネミーとの位置から方向を判定
+    /// </summary>
+    /// <returns></returns>
     private Vector3 GetPlayerDirection() {
         return (playerController.transform.position - transform.position).normalized;
     }
