@@ -1,0 +1,66 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{
+    [SerializeField]
+    private EnemyGenerator enemyGenerator;
+
+
+    private bool isSetUpEnd;
+
+    public int waveCount = 0;
+
+    public int maxWaveCount;
+
+    void Start()
+    {
+        StartCoroutine(ObsevateGenerateEnemyState());
+    }
+
+    /// <summary>
+    /// 敵の生成を監視
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator ObsevateGenerateEnemyState() {
+        Debug.Log("監視開始");
+        bool isAllGenerate = false;
+
+        while (!isAllGenerate) {
+            if (enemyGenerator.isGenerateEnd) {
+                isAllGenerate =true;
+            }
+            yield return null;
+        }
+        Debug.Log("監視終了");
+
+        if (waveCount >= maxWaveCount) {
+            Debug.Log("Game Clear");
+        } else {
+            AdvanceWave();
+        }   
+    }
+
+    /// <summary>
+    /// Wave進行
+    /// </summary>
+    private void AdvanceWave() {
+        waveCount++;
+        Debug.Log(waveCount);
+        if (waveCount == maxWaveCount - 1) {
+            Debug.Log("Boss");
+        } else {
+            // 生成再開
+            enemyGenerator.SwitchGenerateState(false);
+
+            // 監視再開
+            StartCoroutine(ObsevateGenerateEnemyState());
+        }
+    }
+
+    void Update()
+    {
+        
+    }
+}
