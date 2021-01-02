@@ -45,6 +45,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.tag == "Bullet") {
+            Debug.Log(col.gameObject);
             if (col.gameObject.TryGetComponent(out Bullet bullet)) {
                 UpdateHp(bullet);
             }
