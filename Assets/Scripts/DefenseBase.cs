@@ -19,9 +19,16 @@ public class DefenseBase : MonoBehaviour
     [SerializeField]
     private CanvasGroup canvasGroupGameOver;
 
+    [SerializeField]
+    private Text txtGameOver;
+
+    private GameManager gameManager;
+
 
     void Start()
     {
+        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+
         canvasGroupGameOver.DOFade(0, 0.1f);
         maxDurability = durability;
 
@@ -40,19 +47,20 @@ public class DefenseBase : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.tag == "Enemy") {
-            if (col.gameObject.TryGetComponent(out EnemyController enemyController)) {
-                durability -= enemyController.enemyData.power;                
-            }
 
             if (col.gameObject.TryGetComponent(out Bullet bullet)) {
                 durability -= bullet.bulletData.bulletPower;
             }
+            else if (col.gameObject.TryGetComponent(out EnemyController enemyController)) {
+                durability -= enemyController.enemyData.power;                
+            }
+
             durability = Mathf.Clamp(durability, 0, maxDurability);
             UpdateDisplayDurability();
 
-            if(durability <= 0) {
+            if(durability <= 0 && gameManager.isGameUp == false) {
                 Debug.Log("Game Over");
-                GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>().SwitchGameUp(true);
+                gameManager.SwitchGameUp(true);
 
                 DisplayGameOver();
             }
@@ -64,7 +72,10 @@ public class DefenseBase : MonoBehaviour
     /// ゲームオーバー表示
     /// </summary>
     private void DisplayGameOver() {
-        canvasGroupGameOver.DOFade(1.0f, 1.0f);
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(canvasGroupGameOver.DOFade(1.0f, 1.0f));
+        string txt = "Game Over";
+        sequence.Append(txtGameOver.DOText(txt, 1.5f)).SetEase(Ease.Linear);
     }
 }
 
