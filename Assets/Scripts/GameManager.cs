@@ -7,6 +7,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private EnemyGenerator enemyGenerator;
 
+    [SerializeField]
+    private BulletSelectManager bulletSelectManager;
+
+    [SerializeField]
+    private PlayerController playerController;
 
     private bool isSetUpEnd;
 
@@ -16,8 +21,10 @@ public class GameManager : MonoBehaviour
 
     public int maxWaveCount;
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return StartCoroutine(bulletSelectManager.GenerateBulletSelectDetail(playerController));
+
         StartCoroutine(ObservateGenerateEnemyState());
     }
 

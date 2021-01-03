@@ -14,6 +14,8 @@ public class BulletDataSO : ScriptableObject {
         public int bulletPower;
         public float loadingTime;
         public BulletType bulletType;
+        public Sprite sprite;
+        public LiberalType liberalType;
     }
 
     [Serializable]
@@ -21,6 +23,16 @@ public class BulletDataSO : ScriptableObject {
         A,
         B,
         C,
+        D,
+        E,
+        F,
+        G,
         None
+    }
+
+    [Serializable]
+    public enum LiberalType {
+        Player,
+        Enemy
     }
 }
