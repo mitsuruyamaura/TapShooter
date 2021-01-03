@@ -132,3 +132,6 @@ MonoBehaviour:
     bulletPower: 0
     loadingTime: 0
     bulletType: 0
+    sprite: {fileID: 0}
+    liberalType: 0
+  imgBullet: {fileID: 5965983155416220945}

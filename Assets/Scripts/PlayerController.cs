@@ -12,9 +12,12 @@ public class PlayerController : MonoBehaviour
 
     private GameManager gameManager;
 
+    public BulletDataSO.BulletType currentBulletType;
+
     void Start()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+        bulletData = DataBaseManager.instance.GetPlayerBulletData(currentBulletType);
     }
 
 
@@ -37,5 +40,15 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("バースト状態");
             }
         }    
+    }
+
+    /// <summary>
+    /// 弾を変更
+    /// </summary>
+    /// <param name="newBulletType"></param>
+    public void ChangeBullet(BulletDataSO.BulletType newBulletType) {
+        currentBulletType = newBulletType;
+
+        bulletData = DataBaseManager.instance.GetPlayerBulletData(currentBulletType);
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using DG.Tweening;
 
 public class EnemyGenerator : MonoBehaviour
@@ -72,14 +71,14 @@ public class EnemyGenerator : MonoBehaviour
     /// </summary>
     private void GenerateEnemy() {
         int randomEnemyNo = Random.Range(0, DataBaseManager.instance.enemyDataSO.enemyDataList.Count);
-        EnemyDataSO.EnemyData enemyData = GetEnemyData((EnemyDataSO.EnemyType)randomEnemyNo);
+        EnemyDataSO.EnemyData enemyData = DataBaseManager.instance.GetEnemyData((EnemyDataSO.EnemyType)randomEnemyNo);
 
         if (enemyData == null) {
             return;
         }
             
         EnemyController enemy = Instantiate(enemyPrefab, transform);
-        enemy.Inisialize(playerController, GetBulletData(enemyData), enemyData, enemyData.bulletType == BulletDataSO.BulletType.None ? null : bulletPrefab);
+        enemy.Inisialize(playerController, DataBaseManager.instance.GetEnemyBulletData(enemyData), enemyData, enemyData.bulletType == BulletDataSO.BulletType.None ? null : bulletPrefab);
         enemyList.Add(enemy);
 
         generateCount++;
@@ -117,9 +116,9 @@ public class EnemyGenerator : MonoBehaviour
 
         yield return StartCoroutine(DisplayAlert());
 
-        EnemyDataSO.EnemyData enemyData = GetEnemyData(EnemyDataSO.EnemyType.Boss);
+        EnemyDataSO.EnemyData enemyData = DataBaseManager.instance.GetEnemyData(EnemyDataSO.EnemyType.Boss);
         EnemyController enemy = Instantiate(enemyPrefab, transform);
-        enemy.Inisialize(playerController, GetBulletData(enemyData), enemyData, enemyData.bulletType == BulletDataSO.BulletType.None ? null : bulletPrefab);
+        enemy.Inisialize(playerController, DataBaseManager.instance.GetEnemyBulletData(enemyData), enemyData, enemyData.bulletType == BulletDataSO.BulletType.None ? null : bulletPrefab);
         enemy.InitializeBoss(this);
         enemyList.Add(enemy);
 
@@ -138,30 +137,5 @@ public class EnemyGenerator : MonoBehaviour
         canvasGroupBossAlert.DOFade(0.0f, 0.25f);
         yield return new WaitForSeconds(0.25f);
         canvasGroupBossAlert.transform.parent.gameObject.SetActive(false);
-    }
-
-    /// <summary>
-    /// EnemyDataŽæ“¾—p
-    /// </summary>
-    /// <param name="enemyType"></param>
-    /// <returns></returns>
-    private EnemyDataSO.EnemyData GetEnemyData(EnemyDataSO.EnemyType enemyType) {
-        Debug.Log(enemyType);
-        foreach (EnemyDataSO.EnemyData enemyData in DataBaseManager.instance.enemyDataSO.enemyDataList.Where(x => x.enemyType == enemyType)) {
-            return enemyData;
-        }
-        return null;
-    }
-
-    /// <summary>
-    /// BulletDataŽæ“¾—p
-    /// </summary>
-    /// <param name="enemyData"></param>
-    /// <returns></returns>
-    private BulletDataSO.BulletData GetBulletData(EnemyDataSO.EnemyData enemyData) {
-        foreach (BulletDataSO.BulletData bulletData in DataBaseManager.instance.bulletDataSO.bulletDataList.Where((x) => x.bulletType == enemyData.bulletType)) {
-            return bulletData;
-        }
-        return null;
     }
 }

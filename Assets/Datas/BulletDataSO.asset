@@ -17,11 +17,41 @@ MonoBehaviour:
     bulletPower: 30
     loadingTime: 5
     bulletType: 0
-  - bulletSpeed: 0
-    bulletPower: 0
-    loadingTime: 0
-    bulletType: 3
+    sprite: {fileID: 21300000, guid: 31d6418afde7f88478c222064f0a3031, type: 3}
+    liberalType: 1
+  - bulletSpeed: 100
+    bulletPower: 20
+    loadingTime: 5
+    bulletType: 7
+    sprite: {fileID: 0}
+    liberalType: 1
   - bulletSpeed: 100
     bulletPower: 10
     loadingTime: 7
     bulletType: 1
+    sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    liberalType: 1
+  - bulletSpeed: 200
+    bulletPower: 20
+    loadingTime: 7
+    bulletType: 3
+    sprite: {fileID: 21300000, guid: 6fa25de30f19c4542a8eb36e3140fa1f, type: 3}
+    liberalType: 0
+  - bulletSpeed: 100
+    bulletPower: 30
+    loadingTime: 7
+    bulletType: 4
+    sprite: {fileID: 21300000, guid: 0ea79078cf66f134c8e08d5bcd518a49, type: 3}
+    liberalType: 0
+  - bulletSpeed: 300
+    bulletPower: 15
+    loadingTime: 7
+    bulletType: 5
+    sprite: {fileID: 21300000, guid: 37d93363eac1c5744bba218836175145, type: 3}
+    liberalType: 0
+  - bulletSpeed: 500
+    bulletPower: 5
+    loadingTime: 7
+    bulletType: 6
+    sprite: {fileID: 21300000, guid: 2a6d7bf3584512243a1f6a50e15bb283, type: 3}
+    liberalType: 0
