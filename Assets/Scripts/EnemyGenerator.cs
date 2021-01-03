@@ -26,12 +26,19 @@ public class EnemyGenerator : MonoBehaviour
 
     public int preparateTime;
 
+    private GameManager gameManager;
+
     void Start()
-    {        
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         //Generate();
     }
 
     void Update() {
+
+        if (gameManager.isGameUp) {
+            return;
+        }
 
         // ¶¬I—¹ó‘Ô‚È‚çˆ—‚µ‚È‚¢
         if (isGenerateEnd) {
@@ -82,6 +89,18 @@ public class EnemyGenerator : MonoBehaviour
     /// <param name="isSwitch"></param>
     public void SwitchGenerateState(bool isSwitch) {
         isGenerateEnd = isSwitch;
+    }
+
+    /// <summary>
+    /// EnemyList‚ğƒNƒŠƒA
+    /// </summary>
+    public void ClearEnemyList() {
+        for (int i = 0; i < enemyList.Count; i++) {
+            if (enemyList[i] != null) {
+                Destroy(enemyList[i].gameObject);
+            }
+        }
+        enemyList.Clear();
     }
 
     /// <summary>

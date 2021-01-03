@@ -67,6 +67,10 @@ public class GameManager : MonoBehaviour
     /// <param name="isSwitch"></param>
     public void SwitchGameUp(bool isSwitch) {
         isGameUp = isSwitch;
+
+        if (isGameUp) {
+            enemyGenerator.ClearEnemyList();
+        }
     }
 
     void Update()
