@@ -17,6 +17,9 @@ public class EnemyController : MonoBehaviour
     public PlayerController playerController;
 
     [SerializeField]
+    private Image imgEnemy;
+
+    [SerializeField]
     private Slider slider;
 
     [SerializeField]
@@ -102,8 +105,10 @@ public class EnemyController : MonoBehaviour
         transform.localPosition = new Vector3(transform.localPosition.x + Random.Range(-650, 650), transform.localPosition.y, 0);
 
         this.playerController = playerController;
+
         this.enemyData = enemyData;
-        
+        imgEnemy.sprite = this.enemyData.enemySprite;
+
         if (bulletPrefab != null) {
 
             this.bulletPrefab = bulletPrefab;

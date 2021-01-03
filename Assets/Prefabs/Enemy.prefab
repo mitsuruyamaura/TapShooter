@@ -74,7 +74,9 @@ MonoBehaviour:
     hp: 50
     power: 0
     bulletType: 0
+    enemySprite: {fileID: 0}
   playerController: {fileID: 0}
+  imgEnemy: {fileID: 4725010894336348469}
   slider: {fileID: 4985900750795913563}
   canvasGroupSlider: {fileID: 4985900750795913564}
   floatingDamageTran: {fileID: 1820453695654612428}
@@ -144,7 +146,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ec1fba5bf7d73eb479eeeff2e4e164ad, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 37d93363eac1c5744bba218836175145, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

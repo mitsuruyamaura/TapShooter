@@ -65,7 +65,8 @@ public class EnemyGenerator : MonoBehaviour
     /// ìGÇÃê∂ê¨
     /// </summary>
     private void GenerateEnemy() {
-        EnemyDataSO.EnemyData enemyData = GetEnemyData(EnemyDataSO.EnemyType.Normal);
+        int randomEnemyNo = Random.Range(0, DataBaseManager.instance.enemyDataSO.enemyDataList.Count);
+        EnemyDataSO.EnemyData enemyData = GetEnemyData((EnemyDataSO.EnemyType)randomEnemyNo);
 
         if (enemyData == null) {
             return;
@@ -109,6 +110,7 @@ public class EnemyGenerator : MonoBehaviour
     /// <param name="enemyType"></param>
     /// <returns></returns>
     private EnemyDataSO.EnemyData GetEnemyData(EnemyDataSO.EnemyType enemyType) {
+        Debug.Log(enemyType);
         foreach (EnemyDataSO.EnemyData enemyData in DataBaseManager.instance.enemyDataSO.enemyDataList.Where(x => x.enemyType == enemyType)) {
             return enemyData;
         }
