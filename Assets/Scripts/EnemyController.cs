@@ -33,11 +33,17 @@ public class EnemyController : MonoBehaviour
 
     private int maxHp;
 
-    void Start() {
+    private EnemyGenerator enemyGenerator;
+
+    private int hp;
+
+    //void Start() {
         
-        maxHp = enemyData.hp;
-        UpDateDisplayHpGauge();
-    }
+    //    maxHp = enemyData.hp;
+    //    hp = maxHp;
+
+    //    UpDateDisplayHpGauge();
+    //}
 
     void Update() {
         transform.Translate(0, -0.01f, 0);
@@ -60,14 +66,19 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     /// <param name="bullet"></param>
     private void UpdateHp(Bullet bullet) {
-        enemyData.hp -= bullet.bulletData.bulletPower;
-        Debug.Log("Hp : " + enemyData.hp);
+        hp -= bullet.bulletData.bulletPower;
+        Debug.Log("Hp : " + hp);
 
         CreateFloatingDamage(bullet.bulletData.bulletPower);
         UpDateDisplayHpGauge();
 
-        if (enemyData.hp <= 0) {
-            enemyData.hp = 0;
+        if (hp <= 0) {
+            hp = 0;
+
+            if (enemyData.enemyType == EnemyDataSO.EnemyType.Boss) {
+                enemyGenerator.isBossDestroyed = true;
+            }
+
             Destroy(gameObject);
         }
     }
@@ -78,7 +89,7 @@ public class EnemyController : MonoBehaviour
     private void UpDateDisplayHpGauge() {
         Sequence sequence = DOTween.Sequence();
         sequence.Append(canvasGroupSlider.DOFade(1.0f, 0.15f));
-        sequence.Join(slider.DOValue((float)enemyData.hp / maxHp, 0.25f));
+        sequence.Join(slider.DOValue((float)hp / maxHp, 0.25f));
         sequence.AppendInterval(0.25f);
         sequence.Append(canvasGroupSlider.DOFade(0f, 0.15f));
     }
@@ -108,6 +119,11 @@ public class EnemyController : MonoBehaviour
 
         this.enemyData = enemyData;
         imgEnemy.sprite = this.enemyData.enemySprite;
+
+        maxHp = enemyData.hp;
+        hp = maxHp;
+
+        UpDateDisplayHpGauge();
 
         if (bulletPrefab != null) {
 
@@ -142,5 +158,9 @@ public class EnemyController : MonoBehaviour
     /// <returns></returns>
     private Vector3 GetPlayerDirection() {
         return (playerController.transform.position - transform.position).normalized;
+    }
+
+    public void InitializeBoss(EnemyGenerator enemyGenerator) {
+        this.enemyGenerator = enemyGenerator;
     }
 }

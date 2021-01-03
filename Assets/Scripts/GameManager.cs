@@ -18,20 +18,20 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(ObsevateGenerateEnemyState());
+        StartCoroutine(ObservateGenerateEnemyState());
     }
 
     /// <summary>
     /// 敵の生成を監視
     /// </summary>
     /// <returns></returns>
-    private IEnumerator ObsevateGenerateEnemyState() {
+    private IEnumerator ObservateGenerateEnemyState() {
         Debug.Log("監視開始");
         bool isAllGenerate = false;
 
         while (!isAllGenerate) {
             if (enemyGenerator.isGenerateEnd) {
-                isAllGenerate =true;
+                isAllGenerate = true;
             }
             yield return null;
         }
@@ -44,6 +44,22 @@ public class GameManager : MonoBehaviour
         }   
     }
 
+    private IEnumerator ObservateBossState() {
+        Debug.Log("ボス監視開始");
+
+        while (!enemyGenerator.isBossDestroyed) {
+            yield return null;
+        }
+
+        Debug.Log("ゲームクリア");
+
+        // エネミーをすべて削除
+        enemyGenerator.ClearEnemyList();
+
+        // クリア表示
+
+    }
+
     /// <summary>
     /// Wave進行
     /// </summary>
@@ -52,12 +68,19 @@ public class GameManager : MonoBehaviour
         Debug.Log(waveCount);
         if (waveCount == maxWaveCount - 1) {
             Debug.Log("Boss");
+
+            // ボス生成
+            StartCoroutine(enemyGenerator.GenerateBoss());
+
+            // ボス監視
+            StartCoroutine(ObservateBossState());
+
         } else {
             // 生成再開
             enemyGenerator.SwitchGenerateState(false);
 
             // 監視再開
-            StartCoroutine(ObsevateGenerateEnemyState());
+            StartCoroutine(ObservateGenerateEnemyState());
         }
     }
 
