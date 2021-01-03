@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using DG.Tweening;
 
 public class EnemyGenerator : MonoBehaviour
 {
@@ -27,6 +28,11 @@ public class EnemyGenerator : MonoBehaviour
     public int preparateTime;
 
     private GameManager gameManager;
+
+    public bool isBossDestroyed;
+
+    [SerializeField]
+    private CanvasGroup canvasGroupBossAlert;
 
     void Start()
     {
@@ -102,6 +108,36 @@ public class EnemyGenerator : MonoBehaviour
             }
         }
         enemyList.Clear();
+    }
+
+    /// <summary>
+    /// É{ÉXê∂ê¨
+    /// </summary>
+    public IEnumerator GenerateBoss() {
+
+        yield return StartCoroutine(DisplayAlert());
+
+        EnemyDataSO.EnemyData enemyData = GetEnemyData(EnemyDataSO.EnemyType.Boss);
+        EnemyController enemy = Instantiate(enemyPrefab, transform);
+        enemy.Inisialize(playerController, GetBulletData(enemyData), enemyData, enemyData.bulletType == BulletDataSO.BulletType.None ? null : bulletPrefab);
+        enemy.InitializeBoss(this);
+        enemyList.Add(enemy);
+
+        generateCount++;
+
+        if (generateCount >= maxGenerateCount) {
+            isGenerateEnd = true;
+            generateCount = 0;
+        }
+    }
+
+    private IEnumerator DisplayAlert() {
+        canvasGroupBossAlert.transform.parent.gameObject.SetActive(true);
+        canvasGroupBossAlert.DOFade(1.0f, 0.5f).SetLoops(6, LoopType.Yoyo);
+        yield return new WaitForSeconds(3.0f);
+        canvasGroupBossAlert.DOFade(0.0f, 0.25f);
+        yield return new WaitForSeconds(0.25f);
+        canvasGroupBossAlert.transform.parent.gameObject.SetActive(false);
     }
 
     /// <summary>
