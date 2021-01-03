@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     private bool isSetUpEnd;
 
+    public bool isGameUp;
+
     public int waveCount = 0;
 
     public int maxWaveCount;
@@ -57,6 +59,14 @@ public class GameManager : MonoBehaviour
             // ŠÄ‹ÄŠJ
             StartCoroutine(ObsevateGenerateEnemyState());
         }
+    }
+
+    /// <summary>
+    /// ƒQ[ƒ€I—¹ó‘Ô‚ğØ‚è‘Ö‚¦
+    /// </summary>
+    /// <param name="isSwitch"></param>
+    public void SwitchGameUp(bool isSwitch) {
+        isGameUp = isSwitch;
     }
 
     void Update()

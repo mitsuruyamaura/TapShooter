@@ -10,19 +10,21 @@ public class PlayerController : MonoBehaviour
 
     public int tapCount;
 
+    private GameManager gameManager;
+
     void Start()
     {
-
+        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
     }
 
 
     void Update() {
+        if (gameManager.isGameUp) {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0)) {
             Vector3 tapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            //tapPos.z = 2.0f;
-
-            //Vector3 direction = (tapPos - transform.position).normalized;
 
             // Œü‚«‚Ì¶¬iZ¬•ª‚Ìœ‹‚Æ³‹K‰»j
             Vector3 direction = Vector3.Scale(tapPos - transform.position, new Vector3(1, 1, 0)).normalized;

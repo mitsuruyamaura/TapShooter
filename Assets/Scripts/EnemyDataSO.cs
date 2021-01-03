@@ -12,7 +12,7 @@ public class EnemyDataSO : ScriptableObject
     public class EnemyData {
         public EnemyType enemyType;
         public int hp;
-        public float power;
+        public int power;
         public BulletDataSO.BulletType bulletType;
     }
 
