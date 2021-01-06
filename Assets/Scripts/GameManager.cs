@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,9 +23,22 @@ public class GameManager : MonoBehaviour
 
     public int maxWaveCount;
 
+    [SerializeField]
+    private CanvasGroup canvasGroupGameClear;
+
+    [SerializeField]
+    private Image imgGameClear;
+
     IEnumerator Start()
     {
+        canvasGroupGameClear.alpha = 0;
+        imgGameClear.transform.localScale = Vector3.zero;
+
+        enemyGenerator.SetUpEnemyGenerator(playerController, this);
+
         yield return StartCoroutine(bulletSelectManager.GenerateBulletSelectDetail(playerController));
+
+        isSetUpEnd = true;
 
         StartCoroutine(ObservateGenerateEnemyState());
     }
@@ -60,11 +75,11 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("ゲームクリア");
 
-        // エネミーをすべて削除
-        enemyGenerator.ClearEnemyList();
+        // ゲームクリア判定更新
+        SwitchGameUp(true);
 
         // クリア表示
-
+        DisplayGameClear();
     }
 
     /// <summary>
@@ -99,8 +114,25 @@ public class GameManager : MonoBehaviour
         isGameUp = isSwitch;
 
         if (isGameUp) {
+            // エネミーをすべて削除
             enemyGenerator.ClearEnemyList();
         }
+    }
+
+    /// <summary>
+    /// ゲームクリア表示
+    /// </summary>
+    private void DisplayGameClear() {
+        canvasGroupGameClear.DOFade(1.0f, 0.25f)
+            .OnComplete(()=> 
+            {
+                imgGameClear.transform.DOPunchScale(Vector3.one * 2.5f, 0.5f)
+                    .OnComplete(()=> 
+                    {
+                        imgGameClear.transform.DOShakeScale(0.5f);
+                        imgGameClear.transform.localScale = Vector3.one * 1.5f;
+                    });
+            });
     }
 
     void Update()
