@@ -11,7 +11,7 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField]
     private Bullet bulletPrefab;
 
-    [SerializeField]
+    //[SerializeField]
     private PlayerController playerController;
 
     public List<EnemyController> enemyList = new List<EnemyController>();
@@ -33,10 +33,15 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField]
     private CanvasGroup canvasGroupBossAlert;
 
-    void Start()
-    {
-        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
-        //Generate();
+    //void Start()
+    //{
+    //    gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+    //    Generate();
+    //}
+
+    public void SetUpEnemyGenerator(PlayerController playerController, GameManager gameManager) {
+        this.playerController = playerController;
+        this.gameManager = gameManager;
     }
 
     void Update() {
