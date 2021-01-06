@@ -31,12 +31,18 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Start()
     {
+        // ゲームクリアセットの初期設定
         canvasGroupGameClear.alpha = 0;
         imgGameClear.transform.localScale = Vector3.zero;
 
+        // EnemyGeneratorの初期設定
         enemyGenerator.SetUpEnemyGenerator(playerController, this);
 
+        // バレットのボタンを生成
         yield return StartCoroutine(bulletSelectManager.GenerateBulletSelectDetail(playerController));
+
+        // 使用できるバレットの確認と更新
+        bulletSelectManager.JugdeOpenBullets();
 
         isSetUpEnd = true;
 

@@ -15,7 +15,9 @@ public class EnemyDataSO : ScriptableObject
         public int hp;
         public int power;
         public BulletDataSO.BulletType bulletType;
-        public Sprite enemySprite; 
+        public Sprite enemySprite;
+        public int exp;
+        public ElementType elementType;
     }
 
     [Serializable]

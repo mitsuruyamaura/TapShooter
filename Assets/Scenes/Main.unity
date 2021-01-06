@@ -483,6 +483,8 @@ MonoBehaviour:
     bulletType: 3
     sprite: {fileID: 0}
     liberalType: 0
+    openExp: 0
+    elementType: 0
   tapCount: 0
   currentBulletType: 3
 --- !u!1 &313511500
@@ -711,9 +713,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9ff59d57faf5e7439ad6bf6fbe0d67e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSelectDetailPrefab: {fileID: 6478266638016198555, guid: 9be3ffcd2953baa4ba78570fe6b27385, type: 3}
+  bulletSelectDetailPrefab: {fileID: 7439061070637379386, guid: 9be3ffcd2953baa4ba78570fe6b27385, type: 3}
   bulletTran: {fileID: 442035491}
   bulletSelectDetailList: []
+  totalExp: 0
 --- !u!4 &438747827
 Transform:
   m_ObjectHideFlags: 0
@@ -1733,6 +1736,7 @@ MonoBehaviour:
   preparateTime: 3
   isBossDestroyed: 0
   canvasGroupBossAlert: {fileID: 914820720}
+  bulletSelectManager: {fileID: 438747826}
 --- !u!1 &1574221002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1918,7 +1922,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &1646656694
 GameObject:
