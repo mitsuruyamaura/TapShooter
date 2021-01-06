@@ -79,6 +79,9 @@ public class EnemyController : MonoBehaviour
                 enemyGenerator.isBossDestroyed = true;
             }
 
+            // EXP‰ÁŽZ
+            enemyGenerator.UpdateExp(enemyData.exp);
+
             Destroy(gameObject);
         }
     }
@@ -160,7 +163,7 @@ public class EnemyController : MonoBehaviour
         return (playerController.transform.position - transform.position).normalized;
     }
 
-    public void InitializeBoss(EnemyGenerator enemyGenerator) {
+    public void AdditionalInitialize(EnemyGenerator enemyGenerator) {
         this.enemyGenerator = enemyGenerator;
     }
 }

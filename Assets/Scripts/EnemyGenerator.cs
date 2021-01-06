@@ -33,6 +33,8 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField]
     private CanvasGroup canvasGroupBossAlert;
 
+    public BulletSelectManager bulletSelectManager;
+
     //void Start()
     //{
     //    gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
@@ -84,6 +86,7 @@ public class EnemyGenerator : MonoBehaviour
             
         EnemyController enemy = Instantiate(enemyPrefab, transform);
         enemy.Inisialize(playerController, DataBaseManager.instance.GetEnemyBulletData(enemyData), enemyData, enemyData.bulletType == BulletDataSO.BulletType.None ? null : bulletPrefab);
+        enemy.AdditionalInitialize(this);
         enemyList.Add(enemy);
 
         generateCount++;
@@ -124,7 +127,7 @@ public class EnemyGenerator : MonoBehaviour
         EnemyDataSO.EnemyData enemyData = DataBaseManager.instance.GetEnemyData(EnemyDataSO.EnemyType.Boss);
         EnemyController enemy = Instantiate(enemyPrefab, transform);
         enemy.Inisialize(playerController, DataBaseManager.instance.GetEnemyBulletData(enemyData), enemyData, enemyData.bulletType == BulletDataSO.BulletType.None ? null : bulletPrefab);
-        enemy.InitializeBoss(this);
+        enemy.AdditionalInitialize(this);
         enemyList.Add(enemy);
 
         generateCount++;
@@ -142,5 +145,13 @@ public class EnemyGenerator : MonoBehaviour
         canvasGroupBossAlert.DOFade(0.0f, 0.25f);
         yield return new WaitForSeconds(0.25f);
         canvasGroupBossAlert.transform.parent.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// EXP‰ÁŽZ
+    /// </summary>
+    /// <param name="exp"></param>
+    public void UpdateExp(int exp) {
+        bulletSelectManager.UpdateTotalExp(exp);
     }
 }

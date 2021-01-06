@@ -16,6 +16,8 @@ public class BulletDataSO : ScriptableObject {
         public BulletType bulletType;
         public Sprite sprite;
         public LiberalType liberalType;
+        public int openExp;
+        public ElementType elementType;
     }
 
     [Serializable]

@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
 
     public BulletDataSO.BulletType currentBulletType;
 
+
+
     void Start()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();

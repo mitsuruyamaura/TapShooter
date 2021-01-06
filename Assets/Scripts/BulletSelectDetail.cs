@@ -6,8 +6,7 @@ using DG.Tweening;
 
 public class BulletSelectDetail : MonoBehaviour
 {
-    [SerializeField]
-    private Button btnBulletSelect;
+    public Button btnBulletSelect;
 
     public Image imgBullet;
 
@@ -39,5 +38,12 @@ public class BulletSelectDetail : MonoBehaviour
     private void OnClickBulletSelect() {
         playerController.ChangeBullet(bulletData.bulletType);
         bulletSelectManager.ChangeColorToBulletButton(bulletData.bulletType);
+    }
+
+    /// <summary>
+    /// バレットをタップ可否の更新
+    /// </summary>
+    public void SwitchActivateBulletBtn(bool isSwitch) {
+        btnBulletSelect.interactable = isSwitch;
     }
 }
