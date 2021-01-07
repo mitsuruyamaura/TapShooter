@@ -24,7 +24,13 @@ public class PlayerController : MonoBehaviour
 
 
     void Update() {
+        // ゲームクリア、ゲームオーバーのいずれかなら
         if (gameManager.isGameUp) {
+            return;
+        }
+
+        // 準備が整ってないなら
+        if (!gameManager.isSetUpEnd) {
             return;
         }
 

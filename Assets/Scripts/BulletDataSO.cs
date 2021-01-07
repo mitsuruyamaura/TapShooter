@@ -18,6 +18,7 @@ public class BulletDataSO : ScriptableObject {
         public LiberalType liberalType;
         public int openExp;
         public ElementType elementType;
+        public float launchTime;
     }
 
     [Serializable]

@@ -37,16 +37,19 @@ public class BulletSelectManager : MonoBehaviour
     /// 選択しているバレットの色を変更
     /// </summary>
     /// <param name="bulletType"></param>
-    public void ChangeColorToBulletButton(BulletDataSO.BulletType bulletType) {
+    public void ChangeLoadingBulletSettings(BulletDataSO.BulletType bulletType) {
         Debug.Log(bulletType);
         for (int i = 0; i < bulletSelectDetailList.Count; i++) {
             if (bulletSelectDetailList[i].bulletData.bulletType == bulletType) {
 
                 // 選択中は灰色
-                bulletSelectDetailList[i].imgBullet.color = new Color(0.65f, 0.65f, 0.65f);
+                bulletSelectDetailList[i].ChangeColorToBulletBtn(new Color(0.65f, 0.65f, 0.65f));
+
+                bulletSelectDetailList[i].ChangeLoadingBullet(true);
             } else {
                 // 未選択
-                bulletSelectDetailList[i].imgBullet.color = new Color(1.0f, 1.0f, 1.0f);
+                bulletSelectDetailList[i].ChangeColorToBulletBtn(new Color(1.0f, 1.0f, 1.0f));
+                bulletSelectDetailList[i].ChangeLoadingBullet(false);
             }
         }
     }
@@ -68,17 +71,28 @@ public class BulletSelectManager : MonoBehaviour
     /// </summary>
     public void JugdeOpenBullets() {
 
-        //bool isOpen = false;
         // バレットごとに使用可能なEXPを超えているか確認
-        foreach (BulletSelectDetail bulletData in bulletSelectDetailList) {   // .Where((x) => x.bulletData.openExp <= totalExp ? false : true)
+        foreach (BulletSelectDetail bulletData in bulletSelectDetailList) {
             if (bulletData.bulletData.openExp <= totalExp) {
                 // 超えているものはタップできるようにする
                 bulletData.SwitchActivateBulletBtn(true);
             } else {
+                // 超えていないものはタップできないようにする
                 bulletData.SwitchActivateBulletBtn(false);
             }
+        }
+    }
 
-            //Debug.Log(isOpen);
+    /// <summary>
+    /// 初期バレット設定
+    /// </summary>
+    public void ActivateDefaultBullet() {
+        foreach (BulletSelectDetail bulletSelectDetail in bulletSelectDetailList) {
+            if (bulletSelectDetail.isDefaultBullet) {
+                bulletSelectDetail.OnClickBulletSelect();
+                Debug.Log("初期バレットに設定");
+                return;
+            }
         }
     }
 }

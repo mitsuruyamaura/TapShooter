@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private PlayerController playerController;
 
-    private bool isSetUpEnd;
+    public bool isSetUpEnd;
 
     public bool isGameUp;
 
@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Start()
     {
+        isSetUpEnd = false;
+
         // ゲームクリアセットの初期設定
         canvasGroupGameClear.alpha = 0;
         imgGameClear.transform.localScale = Vector3.zero;
