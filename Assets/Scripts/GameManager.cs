@@ -88,6 +88,9 @@ public class GameManager : MonoBehaviour
 
         // クリア表示
         DisplayGameClear();
+
+        // すべてのバレットを押せない状態にする
+        bulletSelectManager.InactivateAllBulletBtns();
     }
 
     /// <summary>
