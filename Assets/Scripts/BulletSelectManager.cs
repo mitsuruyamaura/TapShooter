@@ -15,6 +15,8 @@ public class BulletSelectManager : MonoBehaviour
 
     private PlayerController playerController;
 
+    public int totalExp;
+
     //void Start()
     //{
     //    GenerateBulletSelectDetail();
@@ -46,6 +48,37 @@ public class BulletSelectManager : MonoBehaviour
                 // 未選択
                 bulletSelectDetailList[i].imgBullet.color = new Color(1.0f, 1.0f, 1.0f);
             }
+        }
+    }
+
+    /// <summary>
+    /// EXP加算
+    /// </summary>
+    public void UpdateTotalExp(int exp) {
+
+        // EXP加算
+        totalExp += exp;
+
+        // 使用可能バレットの確認と更新
+        JugdeOpenBullets();
+    }
+
+    /// <summary>
+    /// 使用可能バレットの確認と更新
+    /// </summary>
+    public void JugdeOpenBullets() {
+
+        //bool isOpen = false;
+        // バレットごとに使用可能なEXPを超えているか確認
+        foreach (BulletSelectDetail bulletData in bulletSelectDetailList) {   // .Where((x) => x.bulletData.openExp <= totalExp ? false : true)
+            if (bulletData.bulletData.openExp <= totalExp) {
+                // 超えているものはタップできるようにする
+                bulletData.SwitchActivateBulletBtn(true);
+            } else {
+                bulletData.SwitchActivateBulletBtn(false);
+            }
+
+            //Debug.Log(isOpen);
         }
     }
 }
