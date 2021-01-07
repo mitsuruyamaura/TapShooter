@@ -32,6 +32,8 @@ public class BulletSelectDetail : MonoBehaviour
     [SerializeField]
     private Text txtOpenExpValue;
 
+    private bool isCostPayment;        // 現在コストを支払って開放済かどうか。trueならコスト支払い終了
+
     /// <summary>
     /// 初期設定
     /// </summary>
@@ -82,11 +84,16 @@ public class BulletSelectDetail : MonoBehaviour
             // ゲージを最大値にする
             imgLaunchTimeGauge.fillAmount = 1.0f;
 
+            // コスト支払い済状態にする = 開放条件にてEXPが足りなくても押せない状態にならないようにする
+            SetStateBulletCostPayment(true);
+
+            Debug.Log(GetStateBulletCostPayment());
+
             // EXP減算
             bulletSelectManager.UpdateTotalExp(-bulletData.openExp);
 
-            // EXP非表示
-            txtOpenExpValue.enabled = false;
+            // コストEXP非表示
+            txtOpenExpValue.enabled = false;            
         }
     }
 
@@ -154,5 +161,27 @@ public class BulletSelectDetail : MonoBehaviour
 
         // 開放に必要なEXPを表示
         txtOpenExpValue.enabled = true;
+
+        // コスト未払いの状態に戻す
+        SetStateBulletCostPayment(false);
+
+        // 
+        bulletSelectManager.JugdeOpenBullets();
+    }
+
+    /// <summary>
+    /// コスト支払い状態の確認
+    /// </summary>
+    /// <returns></returns>
+    public bool GetStateBulletCostPayment() {
+        return isCostPayment;
+    }
+
+    /// <summary>
+    /// コスト支払い状態の更新
+    /// </summary>
+    /// <param name="isSet"></param>
+    public void SetStateBulletCostPayment(bool isSet) {
+        isCostPayment = isSet;
     }
 }

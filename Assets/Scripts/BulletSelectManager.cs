@@ -98,6 +98,12 @@ public class BulletSelectManager : MonoBehaviour
 
         // バレットごとに使用可能なEXPを超えているか確認
         foreach (BulletSelectDetail bulletData in bulletSelectDetailList) {
+            Debug.Log(bulletData.GetStateBulletCostPayment());
+            // コストを支払っているかどうか
+            if (bulletData.GetStateBulletCostPayment()) {
+                return;
+            }
+
             if (bulletData.bulletData.openExp <= totalExp) {
                 // 超えているものはタップできるようにする
                 bulletData.SwitchActivateBulletBtn(true);
@@ -128,5 +134,22 @@ public class BulletSelectManager : MonoBehaviour
     private void CreateFlotingExp(int exp) {
         FloatingMessage floatingDamage = Instantiate(floatingDamagePrefab, txtTotalExp.transform, false);
         floatingDamage.DisplayFloatingDamage(exp, FloatingMessage.FloatingMessageType.GetExp);
+    }
+
+    /// <summary>
+    /// すべてのバレットボタンの操作を押せないように制御
+    /// </summary>
+    public void InactivateAllBulletBtns() {
+        for (int i = 0; i < bulletSelectDetailList.Count; i++) {
+            bulletSelectDetailList[i].SwitchActivateBulletBtn(false);
+        }
+    }
+
+    /// <summary>
+    /// TotalExpを取得
+    /// </summary>
+    /// <returns></returns>
+    public int GetTotalExp() {
+        return totalExp;
     }
 }
