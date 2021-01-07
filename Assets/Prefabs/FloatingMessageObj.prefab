@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3382575737554424677}
   - component: {fileID: 323937506041907095}
   m_Layer: 5
-  m_Name: FloatingDamageObj
+  m_Name: FloatingMessageObj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,4 +109,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8c4065116a9f648a74e2d27e79f27e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  txtFloatingDamage: {fileID: 3094717126954953965}
+  txtFloatingMessage: {fileID: 3094717126954953965}

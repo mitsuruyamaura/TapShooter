@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
+using DG.Tweening;
 
 public class BulletSelectManager : MonoBehaviour
 {
@@ -14,6 +16,14 @@ public class BulletSelectManager : MonoBehaviour
     public List<BulletSelectDetail> bulletSelectDetailList = new List<BulletSelectDetail>();
 
     private PlayerController playerController;
+
+    public int totalExp;
+
+    [SerializeField]
+    private Text txtTotalExp;
+
+    [SerializeField]
+    private FloatingMessage floatingDamagePrefab;
 
     //void Start()
     //{
@@ -35,17 +45,88 @@ public class BulletSelectManager : MonoBehaviour
     /// 選択しているバレットの色を変更
     /// </summary>
     /// <param name="bulletType"></param>
-    public void ChangeColorToBulletButton(BulletDataSO.BulletType bulletType) {
+    public void ChangeLoadingBulletSettings(BulletDataSO.BulletType bulletType) {
         Debug.Log(bulletType);
         for (int i = 0; i < bulletSelectDetailList.Count; i++) {
             if (bulletSelectDetailList[i].bulletData.bulletType == bulletType) {
 
                 // 選択中は灰色
-                bulletSelectDetailList[i].imgBullet.color = new Color(0.65f, 0.65f, 0.65f);
+                bulletSelectDetailList[i].ChangeColorToBulletBtn(new Color(0.65f, 0.65f, 0.65f));
+
+                bulletSelectDetailList[i].ChangeLoadingBullet(true);
             } else {
                 // 未選択
-                bulletSelectDetailList[i].imgBullet.color = new Color(1.0f, 1.0f, 1.0f);
+                bulletSelectDetailList[i].ChangeColorToBulletBtn(new Color(1.0f, 1.0f, 1.0f));
+                bulletSelectDetailList[i].ChangeLoadingBullet(false);
             }
         }
+    }
+
+    /// <summary>
+    /// EXP加算
+    /// </summary>
+    public void UpdateTotalExp(int exp) {
+
+        // フロート表示
+        CreateFlotingExp(exp);
+
+        // EXP加算
+        //totalExp += exp;
+
+        int currentAp = totalExp;
+        int updateAp = currentAp + exp;
+
+        // 表示更新     
+        DOTween.To(
+            () => currentAp,
+            (x) => {
+                currentAp = x;
+                txtTotalExp.text = x.ToString();
+            },
+            updateAp,
+            1.0f);
+        totalExp = updateAp;
+
+        // 使用可能バレットの確認と更新
+        JugdeOpenBullets();
+    }
+
+    /// <summary>
+    /// 使用可能バレットの確認と更新
+    /// </summary>
+    public void JugdeOpenBullets() {
+
+        // バレットごとに使用可能なEXPを超えているか確認
+        foreach (BulletSelectDetail bulletData in bulletSelectDetailList) {
+            if (bulletData.bulletData.openExp <= totalExp) {
+                // 超えているものはタップできるようにする
+                bulletData.SwitchActivateBulletBtn(true);
+            } else {
+                // 超えていないものはタップできないようにする
+                bulletData.SwitchActivateBulletBtn(false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 初期バレット設定
+    /// </summary>
+    public void ActivateDefaultBullet() {
+        foreach (BulletSelectDetail bulletSelectDetail in bulletSelectDetailList) {
+            if (bulletSelectDetail.isDefaultBullet) {
+                bulletSelectDetail.OnClickBulletSelect();
+                Debug.Log("初期バレットに設定");
+                return;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 獲得したEXPをフロート表示
+    /// </summary>
+    /// <param name="exp"></param>
+    private void CreateFlotingExp(int exp) {
+        FloatingMessage floatingDamage = Instantiate(floatingDamagePrefab, txtTotalExp.transform, false);
+        floatingDamage.DisplayFloatingDamage(exp, FloatingMessage.FloatingMessageType.GetExp);
     }
 }

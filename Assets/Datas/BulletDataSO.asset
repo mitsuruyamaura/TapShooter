@@ -21,6 +21,7 @@ MonoBehaviour:
     liberalType: 1
     openExp: 0
     elementType: 0
+    launchTime: 0
   - bulletSpeed: 100
     bulletPower: 20
     loadingTime: 5
@@ -29,6 +30,7 @@ MonoBehaviour:
     liberalType: 1
     openExp: 0
     elementType: 0
+    launchTime: 0
   - bulletSpeed: 100
     bulletPower: 10
     loadingTime: 7
@@ -37,6 +39,7 @@ MonoBehaviour:
     liberalType: 1
     openExp: 0
     elementType: 0
+    launchTime: 0
   - bulletSpeed: 200
     bulletPower: 20
     loadingTime: 7
@@ -45,6 +48,7 @@ MonoBehaviour:
     liberalType: 0
     openExp: 0
     elementType: 0
+    launchTime: 5
   - bulletSpeed: 100
     bulletPower: 30
     loadingTime: 7
@@ -53,6 +57,7 @@ MonoBehaviour:
     liberalType: 0
     openExp: 20
     elementType: 0
+    launchTime: 5
   - bulletSpeed: 300
     bulletPower: 15
     loadingTime: 7
@@ -61,6 +66,7 @@ MonoBehaviour:
     liberalType: 0
     openExp: 50
     elementType: 0
+    launchTime: 5
   - bulletSpeed: 500
     bulletPower: 5
     loadingTime: 7
@@ -69,3 +75,4 @@ MonoBehaviour:
     liberalType: 0
     openExp: 100
     elementType: 0
+    launchTime: 5
