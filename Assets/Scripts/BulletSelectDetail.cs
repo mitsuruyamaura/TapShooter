@@ -6,9 +6,11 @@ using DG.Tweening;
 
 public class BulletSelectDetail : MonoBehaviour
 {
-    public Button btnBulletSelect;
+    [SerializeField]
+    private Button btnBulletSelect = null;
 
-    public Image imgBullet;
+    [SerializeField]
+    private Image imgBullet = null;
 
     public BulletDataSO.BulletData bulletData; // Debug用に public
 
@@ -26,6 +28,9 @@ public class BulletSelectDetail : MonoBehaviour
 
     [SerializeField]
     private Image imgLaunchTimeGauge;  // 発射できる時間のゲージ
+
+    [SerializeField]
+    private Text txtOpenExpValue;
 
     /// <summary>
     /// 初期設定
@@ -51,11 +56,16 @@ public class BulletSelectDetail : MonoBehaviour
         // ゲージを非表示にする
         imgLaunchTimeGauge.fillAmount = 0;
 
+        // 開放可能なEXPを表示
+        txtOpenExpValue.text = this.bulletData.openExp.ToString();
+
         // 初期バレット確認
         if (this.bulletData.openExp == 0) {
             // 初期バレット用の設定
             isDefaultBullet = true;
             isLoading = true;
+            txtOpenExpValue.enabled = false;
+
             ChangeColorToBulletBtn(new Color(0.65f, 0.65f, 0.65f));
         }
     }
@@ -71,6 +81,12 @@ public class BulletSelectDetail : MonoBehaviour
         if (!isDefaultBullet && imgLaunchTimeGauge.fillAmount == 0) {
             // ゲージを最大値にする
             imgLaunchTimeGauge.fillAmount = 1.0f;
+
+            // EXP減算
+            bulletSelectManager.UpdateTotalExp(-bulletData.openExp);
+
+            // EXP非表示
+            txtOpenExpValue.enabled = false;
         }
     }
 
@@ -119,13 +135,24 @@ public class BulletSelectDetail : MonoBehaviour
         if (launchTime <= 0) {
             launchTime = 0;
 
-            // 装填を止める
-            isLoading = false;
-
-            // 初期バレットに戻す
-            bulletSelectManager.ActivateDefaultBullet();
-
-            launchTime = initialLaunchTime;
+            InitialzeBulletState();
         }
+    }
+
+    /// <summary>
+    /// 初期バレット以外のバレットを初期状態に戻す
+    /// </summary>
+    private void InitialzeBulletState() {
+        // 装填を止める
+        isLoading = false;
+
+        // 初期バレットに戻す
+        bulletSelectManager.ActivateDefaultBullet();
+
+        // 発射時間の初期化
+        launchTime = initialLaunchTime;
+
+        // 開放に必要なEXPを表示
+        txtOpenExpValue.enabled = true;
     }
 }

@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour
     private Transform floatingDamageTran;
 
     [SerializeField]
-    private FloatingDamage floatingDamagePrefab;
+    private FloatingMessage floatingDamagePrefab;
 
     private int maxHp;
 
@@ -102,7 +102,7 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     /// <param name="bulletPower"></param>
     private void CreateFloatingDamage(int bulletPower) {
-        FloatingDamage floatingDamage = Instantiate(floatingDamagePrefab, floatingDamageTran);
+        FloatingMessage floatingDamage = Instantiate(floatingDamagePrefab, floatingDamageTran);
         floatingDamage.DisplayFloatingDamage(bulletPower);
     }
 

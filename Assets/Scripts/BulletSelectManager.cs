@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
+using DG.Tweening;
 
 public class BulletSelectManager : MonoBehaviour
 {
@@ -16,6 +18,12 @@ public class BulletSelectManager : MonoBehaviour
     private PlayerController playerController;
 
     public int totalExp;
+
+    [SerializeField]
+    private Text txtTotalExp;
+
+    [SerializeField]
+    private FloatingMessage floatingDamagePrefab;
 
     //void Start()
     //{
@@ -59,8 +67,25 @@ public class BulletSelectManager : MonoBehaviour
     /// </summary>
     public void UpdateTotalExp(int exp) {
 
+        // フロート表示
+        CreateFlotingExp(exp);
+
         // EXP加算
-        totalExp += exp;
+        //totalExp += exp;
+
+        int currentAp = totalExp;
+        int updateAp = currentAp + exp;
+
+        // 表示更新     
+        DOTween.To(
+            () => currentAp,
+            (x) => {
+                currentAp = x;
+                txtTotalExp.text = x.ToString();
+            },
+            updateAp,
+            1.0f);
+        totalExp = updateAp;
 
         // 使用可能バレットの確認と更新
         JugdeOpenBullets();
@@ -94,5 +119,14 @@ public class BulletSelectManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    /// <summary>
+    /// 獲得したEXPをフロート表示
+    /// </summary>
+    /// <param name="exp"></param>
+    private void CreateFlotingExp(int exp) {
+        FloatingMessage floatingDamage = Instantiate(floatingDamagePrefab, txtTotalExp.transform, false);
+        floatingDamage.DisplayFloatingDamage(exp, FloatingMessage.FloatingMessageType.GetExp);
     }
 }
