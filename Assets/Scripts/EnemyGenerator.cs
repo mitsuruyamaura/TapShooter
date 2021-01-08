@@ -24,7 +24,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private float timer;
 
-    public int preparateTime;
+    public float preparateTime;
 
     private GameManager gameManager;
 
@@ -49,6 +49,10 @@ public class EnemyGenerator : MonoBehaviour
     void Update() {
 
         if (gameManager.isGameUp) {
+            return;
+        }
+
+        if (!gameManager.isSetUpEnd) {
             return;
         }
 
