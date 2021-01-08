@@ -101,7 +101,8 @@ public class BulletSelectManager : MonoBehaviour
             Debug.Log(bulletData.GetStateBulletCostPayment());
             // ƒRƒXƒg‚ðŽx•¥‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
             if (bulletData.GetStateBulletCostPayment()) {
-                return;
+                bulletData.SwitchActivateBulletBtn(true);
+                continue;
             }
 
             if (bulletData.bulletData.openExp <= totalExp) {
@@ -151,5 +152,12 @@ public class BulletSelectManager : MonoBehaviour
     /// <returns></returns>
     public int GetTotalExp() {
         return totalExp;
+    }
+
+    public void AllSwitchActivateBulletBtn(bool isSwitch) {
+        for (int i = 0; i < bulletSelectDetailList.Count; i++) {
+            // ‰Ÿ‚¹‚È‚¢ó‘Ô‚É‚·‚é
+            bulletSelectDetailList[i].SwitchActivateBulletBtn(isSwitch);
+        }
     }
 }
