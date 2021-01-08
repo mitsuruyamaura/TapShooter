@@ -29,6 +29,13 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Image imgGameClear;
 
+    [SerializeField]
+    private CanvasGroup canvasGroupFilter;
+
+    [SerializeField]
+    private Image imgGameStart;
+
+
     IEnumerator Start()
     {
         isSetUpEnd = false;
@@ -46,9 +53,23 @@ public class GameManager : MonoBehaviour
         // 使用できるバレットの確認と更新
         bulletSelectManager.JugdeOpenBullets();
 
+        // ゲームスタート時の演出
+        yield return StartCoroutine(Opening());
+
+        // 準備完了状態にして、画面のタップを受け付ける
         isSetUpEnd = true;
 
         StartCoroutine(ObservateGenerateEnemyState());
+    }
+
+    private IEnumerator Opening() {
+        canvasGroupFilter.DOFade(0.0f, 1.0f)
+            .OnComplete(() => { imgGameStart.transform.DOLocalMoveX(0, 1.0f); });
+
+        yield return new WaitForSeconds(3.0f);
+        imgGameStart.transform.DOLocalMoveX(1300, 1.0f);
+
+        yield return new WaitForSeconds(0.5f);
     }
 
     /// <summary>
