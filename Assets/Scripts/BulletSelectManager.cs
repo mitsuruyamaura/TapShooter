@@ -15,15 +15,19 @@ public class BulletSelectManager : MonoBehaviour
 
     public List<BulletSelectDetail> bulletSelectDetailList = new List<BulletSelectDetail>();
 
-    private PlayerController playerController;
-
     public int totalExp;
 
     [SerializeField]
     private Text txtTotalExp;
 
     [SerializeField]
-    private FloatingMessage floatingDamagePrefab;
+    private FloatingMessage floatingMessagePrefab;
+
+    [SerializeField]
+    private DefenseBase defenseBase;
+
+    [SerializeField]
+    private GameManager gameManager;
 
     //void Start()
     //{
@@ -98,7 +102,13 @@ public class BulletSelectManager : MonoBehaviour
 
         // バレットごとに使用可能なEXPを超えているか確認
         foreach (BulletSelectDetail bulletData in bulletSelectDetailList) {
-            Debug.Log(bulletData.GetStateBulletCostPayment());
+            //Debug.Log(bulletData.GetStateBulletCostPayment());
+
+            if (gameManager.isGameUp) {
+                bulletData.SwitchActivateBulletBtn(false);
+                continue;
+            }
+
             // コストを支払っているかどうか
             if (bulletData.GetStateBulletCostPayment()) {
                 bulletData.SwitchActivateBulletBtn(true);
@@ -108,9 +118,17 @@ public class BulletSelectManager : MonoBehaviour
             if (bulletData.bulletData.openExp <= totalExp) {
                 // 超えているものはタップできるようにする
                 bulletData.SwitchActivateBulletBtn(true);
+
+                if (!bulletData.isOpenAnimation) {
+                    bulletData.OpenBulletAnimation(true);
+                }
             } else {
                 // 超えていないものはタップできないようにする
                 bulletData.SwitchActivateBulletBtn(false);
+
+                if (bulletData.isOpenAnimation) {
+                    bulletData.OpenBulletAnimation(false);
+                }
             }
         }
     }
@@ -133,8 +151,8 @@ public class BulletSelectManager : MonoBehaviour
     /// </summary>
     /// <param name="exp"></param>
     private void CreateFlotingExp(int exp) {
-        FloatingMessage floatingDamage = Instantiate(floatingDamagePrefab, txtTotalExp.transform, false);
-        floatingDamage.DisplayFloatingDamage(exp, FloatingMessage.FloatingMessageType.GetExp);
+        FloatingMessage floatingMessage = Instantiate(floatingMessagePrefab, txtTotalExp.transform, false);
+        floatingMessage.DisplayFloatingDamage(exp, FloatingMessage.FloatingMessageType.GetExp);
     }
 
     /// <summary>
@@ -159,5 +177,12 @@ public class BulletSelectManager : MonoBehaviour
             // 押せない状態にする
             bulletSelectDetailList[i].SwitchActivateBulletBtn(isSwitch);
         }
+    }
+
+    /// <summary>
+    /// DefenceBase のElementType を変更
+    /// </summary>
+    public void ChangeDefenseBaseElementType(ElementType elementType) {
+        defenseBase.ChangeElementType(elementType);
     }
 }

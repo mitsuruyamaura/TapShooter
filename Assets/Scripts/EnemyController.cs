@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour
     private Transform floatingDamageTran;
 
     [SerializeField]
-    private FloatingMessage floatingDamagePrefab;
+    private FloatingMessage floatingMessagePrefab;
 
     private int maxHp;
 
@@ -66,10 +66,21 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     /// <param name="bullet"></param>
     private void UpdateHp(Bullet bullet) {
-        hp -= bullet.bulletData.bulletPower;
+        if(ElementCompatibilityChecker.GetElementCompatibility(bullet.bulletData.elementType, enemyData.elementType)) {
+            hp -= bullet.bulletData.bulletPower * 2;
+            Debug.Log("Element 相性　良");
+
+            CreateFloatingDamage(bullet.bulletData.bulletPower * 2, true);
+        } else {
+            hp -= bullet.bulletData.bulletPower;
+            CreateFloatingDamage(bullet.bulletData.bulletPower, false);
+        }
+
+        //hp -= bullet.bulletData.bulletPower;
+        
         Debug.Log("Hp : " + hp);
 
-        CreateFloatingDamage(bullet.bulletData.bulletPower);
+        //CreateFloatingDamage(bullet.bulletData.bulletPower);
         UpDateDisplayHpGauge();
 
         if (hp <= 0) {
@@ -101,9 +112,9 @@ public class EnemyController : MonoBehaviour
     /// ダメージ表示の生成
     /// </summary>
     /// <param name="bulletPower"></param>
-    private void CreateFloatingDamage(int bulletPower) {
-        FloatingMessage floatingDamage = Instantiate(floatingDamagePrefab, floatingDamageTran);
-        floatingDamage.DisplayFloatingDamage(bulletPower);
+    private void CreateFloatingDamage(int bulletPower, bool isElementCompatibility) {
+        FloatingMessage floatingMessage = Instantiate(floatingMessagePrefab, floatingDamageTran);
+        floatingMessage.DisplayFloatingDamage(bulletPower, FloatingMessage.FloatingMessageType.EnemyDamage ,isElementCompatibility);
     }
 
     /// <summary>
@@ -163,6 +174,10 @@ public class EnemyController : MonoBehaviour
         return (playerController.transform.position - transform.position).normalized;
     }
 
+    /// <summary>
+    /// 追加の初期設定
+    /// </summary>
+    /// <param name="enemyGenerator"></param>
     public void AdditionalInitialize(EnemyGenerator enemyGenerator) {
         this.enemyGenerator = enemyGenerator;
     }

@@ -70,17 +70,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 7767945454978911253, guid: 8dd30384b3a3ca54096c7d896acc0549, type: 3}
   enemyData:
+    no: 0
     enemyType: 0
     hp: 50
     power: 0
     bulletType: 0
     enemySprite: {fileID: 0}
+    exp: 0
+    elementType: 0
   playerController: {fileID: 0}
   imgEnemy: {fileID: 4725010894336348469}
   slider: {fileID: 4985900750795913563}
   canvasGroupSlider: {fileID: 4985900750795913564}
   floatingDamageTran: {fileID: 1820453695654612428}
-  floatingDamagePrefab: {fileID: 323937506041907095, guid: 12cf7cafede3a5b48a6faa72504edc13, type: 3}
+  floatingMessagePrefab: {fileID: 323937506041907095, guid: 12cf7cafede3a5b48a6faa72504edc13, type: 3}
 --- !u!1 &4725010894336348471
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +213,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
-    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
