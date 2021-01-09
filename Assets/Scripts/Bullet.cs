@@ -11,52 +11,64 @@ public class Bullet : MonoBehaviour {
     [SerializeField]
     private Image imgBullet;
 
-    bool isTarget;
+    private bool isTarget;
 
-    Vector3 Position;
+    private Vector3 nearPos;
 
-    float rad;
-
-    public Vector3 nearPos;
-
-    Vector3 dir;
-
+    /// <summary>
+    /// バレットの制御
+    /// </summary>
+    /// <param name="bulletData"></param>
+    /// <param name="direction"></param>
     public void Shot(BulletDataSO.BulletData bulletData, Vector3 direction) {
 
-        nearPos = Vector3.zero;
+        // 追尾弾のみ処理する
         if (bulletData.bulletType == BulletDataSO.BulletType.E) {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-            if (enemies.Length > 0) {
-                nearPos = enemies[0].transform.position;
-                Vector3 myPos = transform.position;
-                for (int i = 0; i < enemies.Length; i++) {
-                    Vector3 pos = enemies[i].transform.position - myPos;
 
+            // 発射時にゲーム内にいるエネミーの情報を取得
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+            // エネミーが１体以上いるなら
+            if (enemies.Length > 0) {
+
+                // 一番近いエネミーとして、配列の最初のエネミーの位置情報を仮に登録
+                nearPos = enemies[0].transform.position;
+
+                // すべてのエネミーの位置を順番に確認
+                for (int i = 0; i < enemies.Length; i++) {
+                    // これは省略可能
+                    Vector3 pos = enemies[i].transform.position;
+                    // 現在のエネミーの位置と比較して、画面の下に近いものを nearPos として更新する
                     if (nearPos.x < pos.x && nearPos.y < pos.y) {
                         nearPos = pos;
+                        //Debug.Log(nearPos);
                     }
                 }
+
+                // 追尾するターゲットありとして登録し、Updateメソッドを動くようにする
+                isTarget = true;
             }
-            Debug.Log(nearPos);
-            isTarget = true;
+
         }
 
         this.bulletData = bulletData;
-        imgBullet.sprite = bulletData.sprite;
+        imgBullet.sprite = bulletData.bulletSprite;
 
         if (bulletData.liberalType == BulletDataSO.LiberalType.Player) {
-            transform.eulerAngles = new Vector3(0, 0, 180);
-            transform.localScale = new Vector3(2, 2, 2);
+            //transform.eulerAngles = new Vector3(0, 0, 180);
+            transform.localScale = new Vector3(1.35f, 1.35f, 1.35f);
         }
 
+        // 追尾弾以外
         if (bulletData.bulletType != BulletDataSO.BulletType.E) {
             GetComponent<Rigidbody2D>().AddForce(direction * bulletData.bulletSpeed);
-        } else {
-            dir = Vector3.Scale(nearPos - transform.position, new Vector3(1, 1, 0)).normalized;
-            rad = Mathf.Atan2(dir.y, dir.x);
+        } 
+        //else {
+            //dir = Vector3.Scale(nearPos - transform.position, new Vector3(1, 1, 0)).normalized;
+            //rad = Mathf.Atan2(dir.y, dir.x);
 
-            Debug.Log(rad);
-        }
+            //Debug.Log(rad);
+        //}
 
         Destroy(gameObject, 5.0f);
     }
@@ -66,10 +78,11 @@ public class Bullet : MonoBehaviour {
             return;
         }
 
+        // 追尾用(タップ位置に関係なく、キャラに近いエネミーに発射する)
         Vector3 currentPos = transform.position;
         Vector3 targetPos = nearPos;
 
-        transform.position = Vector3.MoveTowards(currentPos, targetPos, Time.deltaTime * bulletData.bulletSpeed);
+        transform.position = Vector3.MoveTowards(currentPos, targetPos, Time.deltaTime / 10 * bulletData.bulletSpeed);
 
         //// 現在位置をPositionに代入
         //Position = transform.localPosition;

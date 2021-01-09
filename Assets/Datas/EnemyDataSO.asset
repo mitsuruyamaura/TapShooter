@@ -20,7 +20,7 @@ MonoBehaviour:
     bulletType: 1
     enemySprite: {fileID: 21300000, guid: ec1fba5bf7d73eb479eeeff2e4e164ad, type: 3}
     exp: 10
-    elementType: 0
+    elementType: 4
   - no: 1
     enemyType: 1
     hp: 80
@@ -28,7 +28,7 @@ MonoBehaviour:
     bulletType: 7
     enemySprite: {fileID: 21300000, guid: a177e9738fb88644fafed7066b2a19d6, type: 3}
     exp: 20
-    elementType: 0
+    elementType: 3
   - no: 2
     enemyType: 6
     hp: 200
