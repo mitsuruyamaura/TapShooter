@@ -36,7 +36,7 @@ public class DataBaseManager : MonoBehaviour
     }
 
     /// <summary>
-    /// BulletData取得用
+    /// EnemyDataからBulletData取得用
     /// </summary>
     /// <param name="enemyData"></param>
     /// <returns></returns>
@@ -47,10 +47,27 @@ public class DataBaseManager : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// BulletTypeからBulletData取得用
+    /// </summary>
+    /// <param name="bulletType"></param>
+    /// <returns></returns>
     public BulletDataSO.BulletData GetPlayerBulletData(BulletDataSO.BulletType bulletType) {
         foreach (BulletDataSO.BulletData bulletData in bulletDataSO.bulletDataList.Where((x) => x.bulletType == bulletType)) {
             return bulletData;
         }
         return bulletDataSO.bulletDataList[0];
+    }
+
+    /// <summary>
+    /// ElementTypeからSprite取得用
+    /// </summary>
+    /// <param name="elementType"></param>
+    /// <returns></returns>
+    public Sprite GetElementTypeSprite(ElementType elementType) {
+        foreach(BulletDataSO.Element element in bulletDataSO.elementList.Where(x => x.no == (int)elementType)) {
+            return element.elementSprite;
+        }
+        return bulletDataSO.elementList[0].elementSprite;
     }
 }

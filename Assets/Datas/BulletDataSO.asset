@@ -17,62 +17,69 @@ MonoBehaviour:
     bulletPower: 30
     loadingTime: 5
     bulletType: 0
-    sprite: {fileID: 21300000, guid: 31d6418afde7f88478c222064f0a3031, type: 3}
+    btnSprite: {fileID: 0}
     liberalType: 1
     openExp: 0
     elementType: 0
     launchTime: 0
+    bulletSprite: {fileID: 21300000, guid: 3737d112c07c89c47bf542c17a923efc, type: 3}
   - bulletSpeed: 100
     bulletPower: 20
     loadingTime: 5
     bulletType: 7
-    sprite: {fileID: 0}
+    btnSprite: {fileID: 0}
     liberalType: 1
     openExp: 0
     elementType: 0
     launchTime: 0
+    bulletSprite: {fileID: 0}
   - bulletSpeed: 100
     bulletPower: 10
     loadingTime: 7
     bulletType: 1
-    sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    btnSprite: {fileID: 0}
     liberalType: 1
     openExp: 0
-    elementType: 0
+    elementType: 1
     launchTime: 0
+    bulletSprite: {fileID: 21300000, guid: d24f48ee62c5afc4ba6caeec66ae94e2, type: 3}
   - bulletSpeed: 200
     bulletPower: 20
     loadingTime: 7
     bulletType: 3
-    sprite: {fileID: 21300000, guid: 6fa25de30f19c4542a8eb36e3140fa1f, type: 3}
+    btnSprite: {fileID: 21300000, guid: 6fa25de30f19c4542a8eb36e3140fa1f, type: 3}
     liberalType: 0
     openExp: 0
-    elementType: 0
+    elementType: 4
     launchTime: 5
+    bulletSprite: {fileID: 21300000, guid: c942109b78497be4994b5821a3878167, type: 3}
   - bulletSpeed: 100
-    bulletPower: 30
+    bulletPower: 15
     loadingTime: 7
     bulletType: 4
-    sprite: {fileID: 21300000, guid: 0ea79078cf66f134c8e08d5bcd518a49, type: 3}
+    btnSprite: {fileID: 21300000, guid: 0ea79078cf66f134c8e08d5bcd518a49, type: 3}
     liberalType: 0
     openExp: 20
-    elementType: 0
+    elementType: 1
     launchTime: 5
+    bulletSprite: {fileID: 21300000, guid: 71fbce08b1d61f847a886d21ea90fb2e, type: 3}
   - bulletSpeed: 300
     bulletPower: 15
     loadingTime: 7
     bulletType: 5
-    sprite: {fileID: 21300000, guid: 37d93363eac1c5744bba218836175145, type: 3}
+    btnSprite: {fileID: 21300000, guid: 37d93363eac1c5744bba218836175145, type: 3}
     liberalType: 0
     openExp: 50
-    elementType: 0
+    elementType: 3
     launchTime: 5
-  - bulletSpeed: 500
-    bulletPower: 5
+    bulletSprite: {fileID: 21300000, guid: 407402e0fa937ad408a0a112b5531c75, type: 3}
+  - bulletSpeed: 150
+    bulletPower: 20
     loadingTime: 7
     bulletType: 6
-    sprite: {fileID: 21300000, guid: 2a6d7bf3584512243a1f6a50e15bb283, type: 3}
+    btnSprite: {fileID: 21300000, guid: 2a6d7bf3584512243a1f6a50e15bb283, type: 3}
     liberalType: 0
     openExp: 100
-    elementType: 0
+    elementType: 2
     launchTime: 5
+    bulletSprite: {fileID: 21300000, guid: bc31c18bcd8fe3141b21d3b1716bf030, type: 3}

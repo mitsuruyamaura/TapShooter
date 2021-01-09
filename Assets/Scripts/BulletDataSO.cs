@@ -14,11 +14,12 @@ public class BulletDataSO : ScriptableObject {
         public int bulletPower;
         public float loadingTime;
         public BulletType bulletType;
-        public Sprite sprite;
+        public Sprite btnSprite;
         public LiberalType liberalType;
         public int openExp;
         public ElementType elementType;
         public float launchTime;
+        public Sprite bulletSprite;
     }
 
     [Serializable]
@@ -38,4 +39,12 @@ public class BulletDataSO : ScriptableObject {
         Player,
         Enemy
     }
+
+    [Serializable]
+    public class Element {
+        public int no;
+        public Sprite elementSprite;
+    }
+
+    public List<Element> elementList = new List<Element>();
 }
