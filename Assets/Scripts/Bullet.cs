@@ -59,6 +59,10 @@ public class Bullet : MonoBehaviour {
             transform.localScale = new Vector3(1.35f, 1.35f, 1.35f);
         }
 
+        if (bulletData.liberalType == BulletDataSO.LiberalType.BOSS) {
+            transform.SetParent(GameObject.FindGameObjectWithTag("BulletPool").transform);
+        }
+
         // ’Ç”ö’eˆÈŠO
         if (bulletData.bulletType != BulletDataSO.BulletType.E) {
             GetComponent<Rigidbody2D>().AddForce(direction * bulletData.bulletSpeed);
