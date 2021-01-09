@@ -36,6 +36,8 @@ public class BulletSelectDetail : MonoBehaviour
 
     public bool isOpenAnimation;
 
+    [SerializeField]
+    private Image imgElementTypeBackground;
 
     /// <summary>
     /// ‰Šúİ’è
@@ -77,6 +79,9 @@ public class BulletSelectDetail : MonoBehaviour
 
             bulletSelectManager.ChangeDefenseBaseElementType(this.bulletData.elementType);
         }
+
+        // ”wŒi‰æ‘œ‚Ì•ÏX
+        imgElementTypeBackground.sprite = DataBaseManager.instance.GetElementTypeSprite(this.bulletData.elementType);
     }
 
     /// <summary>
