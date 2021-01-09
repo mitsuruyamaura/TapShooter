@@ -10,7 +10,7 @@ public class BulletSelectDetail : MonoBehaviour
     private Button btnBulletSelect = null;
 
     [SerializeField]
-    private Image imgBullet = null;
+    private Image imgBulletBtn = null;
 
     public BulletDataSO.BulletData bulletData; // Debug用に public
 
@@ -34,6 +34,9 @@ public class BulletSelectDetail : MonoBehaviour
 
     private bool isCostPayment;        // 現在コストを支払って開放済かどうか。trueならコスト支払い終了
 
+    public bool isOpenAnimation;
+
+
     /// <summary>
     /// 初期設定
     /// </summary>
@@ -46,10 +49,12 @@ public class BulletSelectDetail : MonoBehaviour
         this.bulletSelectManager = bulletSelectManager;
 
         // 画像変更
-        imgBullet.sprite = this.bulletData.sprite;
+        imgBulletBtn.sprite = this.bulletData.btnSprite;
 
         // メソッド登録
         btnBulletSelect.onClick.AddListener(OnClickBulletSelect);
+
+        SwitchActivateBulletBtn(false);
 
         // 発射時間設定
         initialLaunchTime = this.bulletData.launchTime;
@@ -66,9 +71,11 @@ public class BulletSelectDetail : MonoBehaviour
             // 初期バレット用の設定
             isDefaultBullet = true;
             isLoading = true;
-            txtOpenExpValue.enabled = false;
+            txtOpenExpValue.gameObject.SetActive(false);
 
             ChangeColorToBulletBtn(new Color(0.65f, 0.65f, 0.65f));
+
+            bulletSelectManager.ChangeDefenseBaseElementType(this.bulletData.elementType);
         }
     }
 
@@ -78,6 +85,8 @@ public class BulletSelectDetail : MonoBehaviour
     public void OnClickBulletSelect() {
         playerController.ChangeBullet(bulletData.bulletType);
         bulletSelectManager.ChangeLoadingBulletSettings(bulletData.bulletType);
+
+        bulletSelectManager.ChangeDefenseBaseElementType(bulletData.elementType);
 
         // 重複防止
         if (!isDefaultBullet && imgLaunchTimeGauge.fillAmount == 0) {
@@ -93,7 +102,8 @@ public class BulletSelectDetail : MonoBehaviour
             bulletSelectManager.UpdateTotalExp(-bulletData.openExp);
 
             // コストEXP非表示
-            txtOpenExpValue.enabled = false;            
+            //txtOpenExpValue.enabled = false;     
+            txtOpenExpValue.gameObject.SetActive(false);
         }
     }
 
@@ -117,7 +127,7 @@ public class BulletSelectDetail : MonoBehaviour
     /// </summary>
     /// <param name="newColor"></param>
     public void ChangeColorToBulletBtn(Color newColor) {
-        imgBullet.color = newColor;
+        imgBulletBtn.color = newColor;
     }
 
     void Update() {
@@ -160,7 +170,8 @@ public class BulletSelectDetail : MonoBehaviour
         launchTime = initialLaunchTime;
 
         // 開放に必要なEXPを表示
-        txtOpenExpValue.enabled = true;
+        //txtOpenExpValue.enabled = true;
+        txtOpenExpValue.gameObject.SetActive(true);
 
         // コスト未払いの状態に戻す
         SetStateBulletCostPayment(false);
@@ -183,5 +194,15 @@ public class BulletSelectDetail : MonoBehaviour
     /// <param name="isSet"></param>
     public void SetStateBulletCostPayment(bool isSet) {
         isCostPayment = isSet;
+    }
+
+    /// <summary>
+    /// コストが支払える状態になった際のアニメ演出 
+    /// </summary>
+    public void OpenBulletAnimation(bool isSet) {
+        isOpenAnimation = isSet;
+        if (isOpenAnimation) {
+            transform.DOShakeScale(0.25f, 1, 10, 45).SetEase(Ease.Linear);
+        }
     }
 }

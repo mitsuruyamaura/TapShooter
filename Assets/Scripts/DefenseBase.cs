@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class DefenseBase : MonoBehaviour
-{
+public class DefenseBase : MonoBehaviour {
     [SerializeField]
     private Slider slider;
 
@@ -24,9 +23,15 @@ public class DefenseBase : MonoBehaviour
 
     private GameManager gameManager;
 
+    [SerializeField]
+    private FloatingMessage floatingMessagePrefab;
 
-    void Start()
-    {
+    public ElementType currentElementType;            // Debug終わったら privateにする
+
+    [SerializeField]
+    private Transform floatingMessageTran;
+
+    void Start() {
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
 
         canvasGroupGameOver.DOFade(0, 0.1f);
@@ -42,30 +47,36 @@ public class DefenseBase : MonoBehaviour
         txtDurability.text = durability + "  / " + maxDurability;
 
         slider.DOValue((float)durability / maxDurability, 0.25f);
-
     }
 
     private void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.tag == "Enemy") {
 
+            col.gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+
             if (col.gameObject.TryGetComponent(out Bullet bullet)) {
-                durability -= bullet.bulletData.bulletPower;
-            }
-            else if (col.gameObject.TryGetComponent(out EnemyController enemyController)) {
-                durability -= enemyController.enemyData.power;                
+                // 相性確認してダメージ処理
+                Damage(bullet.bulletData.bulletPower, bullet.bulletData.elementType);
+
+                Debug.Log("bullet");
+
+            } else if (col.gameObject.TryGetComponent(out EnemyController enemyController)) {
+                Damage(enemyController.enemyData.power, enemyController.enemyData.elementType);
+
+                Debug.Log("Enemy");
             }
 
             durability = Mathf.Clamp(durability, 0, maxDurability);
             UpdateDisplayDurability();
 
-            if(durability <= 0 && gameManager.isGameUp == false) {
+            if (durability <= 0 && gameManager.isGameUp == false) {
                 Debug.Log("Game Over");
                 gameManager.SwitchGameUp(true);
 
                 DisplayGameOver();
             }
             Destroy(col.gameObject);
-        }        
+        }
     }
 
     /// <summary>
@@ -76,6 +87,45 @@ public class DefenseBase : MonoBehaviour
         sequence.Append(canvasGroupGameOver.DOFade(1.0f, 1.0f));
         string txt = "Game Over";
         sequence.Append(txtGameOver.DOText(txt, 1.5f)).SetEase(Ease.Linear);
+    }
+
+    /// <summary>
+    /// ElementType変更
+    /// </summary>
+    /// <param name="newElementType"></param>
+    public void ChangeElementType(ElementType newElementType) {
+        currentElementType = newElementType;
+
+        Debug.Log("現在のElementType : " + currentElementType);
+    }
+
+    /// <summary>
+    /// ElementTypeの相性判定を行ってダメージ処理
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="attackElementType"></param>
+    private void Damage(int damage, ElementType attackElementType) {
+        // 相性確認
+        if (ElementCompatibilityChecker.GetElementCompatibility(attackElementType, currentElementType)) {
+            durability -= damage * 2;
+            CreateFloatingDamage(damage * 2, true);
+
+            Debug.Log("エネミーと DefenseBase の Element 相性　悪い");
+        } else {
+            durability -= damage;
+            CreateFloatingDamage(damage, false);
+            Debug.Log("エネミーと DefenseBase の Element 相性　普通");
+        }
+    }
+
+    /// <summary>
+    /// ダメージ表示の生成
+    /// </summary>
+    /// <param name="bulletPower"></param>
+    /// <param name="isElementCompatibility"></param>
+    private void CreateFloatingDamage(int bulletPower, bool isElementCompatibility) {
+        FloatingMessage floatingMessage = Instantiate(floatingMessagePrefab, floatingMessageTran);
+        floatingMessage.DisplayFloatingDamage(bulletPower, FloatingMessage.FloatingMessageType.PlayerDamage, isElementCompatibility);
     }
 }
 
