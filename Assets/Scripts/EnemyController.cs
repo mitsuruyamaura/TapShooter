@@ -45,12 +45,12 @@ public class EnemyController : MonoBehaviour
     //    UpDateDisplayHpGauge();
     //}
 
-    void Update() {
-        transform.Translate(0, -0.01f, 0);
-        if (transform.localPosition.y < -3000) {
-            Destroy(gameObject);
-        }
-    }
+    //void Update() {
+    //    transform.Translate(0, -0.01f, 0);
+    //    if (transform.localPosition.y < -3000) {
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     private void OnTriggerEnter2D(Collider2D col) {
         if (col.gameObject.tag == "Bullet") {

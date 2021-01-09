@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: BulletDataSO
   m_EditorClassIdentifier: 
   bulletDataList:
-  - bulletSpeed: 50
+  - bulletSpeed: 80
     bulletPower: 30
     loadingTime: 5
     bulletType: 0
     btnSprite: {fileID: 0}
-    liberalType: 1
+    liberalType: 2
     openExp: 0
     elementType: 0
     launchTime: 0
@@ -83,3 +83,14 @@ MonoBehaviour:
     elementType: 2
     launchTime: 5
     bulletSprite: {fileID: 21300000, guid: bc31c18bcd8fe3141b21d3b1716bf030, type: 3}
+  elementList:
+  - no: 0
+    elementSprite: {fileID: -451546867780355519, guid: ead0911ac885af74c863bb7a2d4cec07, type: 3}
+  - no: 1
+    elementSprite: {fileID: -7139427656353636314, guid: 910de6ac1bd889f41bba3c9d52ce6de4, type: 3}
+  - no: 2
+    elementSprite: {fileID: -8417728780425517555, guid: ead0911ac885af74c863bb7a2d4cec07, type: 3}
+  - no: 3
+    elementSprite: {fileID: 3041937406426124226, guid: 910de6ac1bd889f41bba3c9d52ce6de4, type: 3}
+  - no: 4
+    elementSprite: {fileID: -2593087881047472198, guid: 910de6ac1bd889f41bba3c9d52ce6de4, type: 3}

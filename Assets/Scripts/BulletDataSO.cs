@@ -37,7 +37,8 @@ public class BulletDataSO : ScriptableObject {
     [Serializable]
     public enum LiberalType {
         Player,
-        Enemy
+        Enemy,
+        BOSS
     }
 
     [Serializable]

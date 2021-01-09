@@ -158,4 +158,8 @@ public class EnemyGenerator : MonoBehaviour
     public void UpdateExp(int exp) {
         bulletSelectManager.UpdateTotalExp(exp);
     }
+
+    public void ClearEnemyBullet() {
+        Destroy(GameObject.FindGameObjectWithTag("BulletPool"));
+    }
 }

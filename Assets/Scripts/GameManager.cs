@@ -51,10 +51,13 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(bulletSelectManager.GenerateBulletSelectDetail(playerController));
 
         // 使用できるバレットの確認と更新
-        bulletSelectManager.JugdeOpenBullets();
+        //bulletSelectManager.JugdeOpenBullets();
 
         // ゲームスタート時の演出
         yield return StartCoroutine(Opening());
+
+        // 使用できるバレットの確認と更新。初期バレットをアニメさせる
+        bulletSelectManager.JugdeOpenBullets();
 
         // 準備完了状態にして、画面のタップを受け付ける
         isSetUpEnd = true;
@@ -148,6 +151,9 @@ public class GameManager : MonoBehaviour
         if (isGameUp) {
             // エネミーをすべて削除
             enemyGenerator.ClearEnemyList();
+
+            // 敵のバレットをすべて削除
+            enemyGenerator.ClearEnemyBullet();
         }
     }
 
