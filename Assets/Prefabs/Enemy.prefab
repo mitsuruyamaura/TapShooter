@@ -84,6 +84,7 @@ MonoBehaviour:
   canvasGroupSlider: {fileID: 4985900750795913564}
   floatingDamageTran: {fileID: 1820453695654612428}
   floatingMessagePrefab: {fileID: 323937506041907095, guid: 12cf7cafede3a5b48a6faa72504edc13, type: 3}
+  bulletEffectPrefab: {fileID: 9118173916307626387, guid: 54225e1aa038e194888fb897d261b428, type: 3}
 --- !u!1 &4725010894336348471
 GameObject:
   m_ObjectHideFlags: 0

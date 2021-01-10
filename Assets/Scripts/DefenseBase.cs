@@ -31,6 +31,16 @@ public class DefenseBase : MonoBehaviour {
     [SerializeField]
     private Transform floatingMessageTran;
 
+    [SerializeField]
+    private GameObject bulletHitEffectPrefab;
+
+    [SerializeField]
+    private GameObject enemyAttackEffectPrefab;
+
+    [SerializeField]
+    private Button btnRestartFilter;
+
+
     void Start() {
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
 
@@ -38,6 +48,8 @@ public class DefenseBase : MonoBehaviour {
         maxDurability = durability;
 
         UpdateDisplayDurability();
+
+        btnRestartFilter.onClick.AddListener(() => gameManager.OnClickRestart(canvasGroupGameOver));
     }
 
     /// <summary>
@@ -53,18 +65,27 @@ public class DefenseBase : MonoBehaviour {
         if (col.gameObject.tag == "Enemy") {
 
             col.gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-
+            GameObject effectPrefab = null;
             if (col.gameObject.TryGetComponent(out Bullet bullet)) {
                 // 相性確認してダメージ処理
                 Damage(bullet.bulletData.bulletPower, bullet.bulletData.elementType);
 
                 Debug.Log("bullet");
 
+                effectPrefab = bulletHitEffectPrefab;
+
             } else if (col.gameObject.TryGetComponent(out EnemyController enemyController)) {
                 Damage(enemyController.enemyData.power, enemyController.enemyData.elementType);
 
                 Debug.Log("Enemy");
+
+                effectPrefab = enemyAttackEffectPrefab;
             }
+
+            // 種類に合わせたエフェクトを生成
+            GameObject effect = Instantiate(effectPrefab, col.gameObject.transform, false);
+            effect.transform.SetParent(GameObject.FindGameObjectWithTag("BulletPool").transform);
+            Destroy(effect, 3.0f);
 
             durability = Mathf.Clamp(durability, 0, maxDurability);
             UpdateDisplayDurability();
@@ -86,7 +107,13 @@ public class DefenseBase : MonoBehaviour {
         Sequence sequence = DOTween.Sequence();
         sequence.Append(canvasGroupGameOver.DOFade(1.0f, 1.0f));
         string txt = "Game Over";
-        sequence.Append(txtGameOver.DOText(txt, 1.5f)).SetEase(Ease.Linear);
+        sequence.Append(txtGameOver.DOText(txt, 1.5f))
+            .SetEase(Ease.Linear)
+            .OnComplete(() => 
+            {
+                // 画面のタップを許可
+                canvasGroupGameOver.blocksRaycasts = true;
+            });
     }
 
     /// <summary>
@@ -106,7 +133,7 @@ public class DefenseBase : MonoBehaviour {
     /// <param name="attackElementType"></param>
     private void Damage(int damage, ElementType attackElementType) {
         // 相性確認
-        if (ElementCompatibilityChecker.GetElementCompatibility(attackElementType, currentElementType)) {
+        if (ElementCompatibilityHelper.GetElementCompatibility(attackElementType, currentElementType)) {
             durability -= damage * 2;
             CreateFloatingDamage(damage * 2, true);
 
@@ -125,7 +152,7 @@ public class DefenseBase : MonoBehaviour {
     /// <param name="isElementCompatibility"></param>
     private void CreateFloatingDamage(int bulletPower, bool isElementCompatibility) {
         FloatingMessage floatingMessage = Instantiate(floatingMessagePrefab, floatingMessageTran);
-        floatingMessage.DisplayFloatingDamage(bulletPower, FloatingMessage.FloatingMessageType.PlayerDamage, isElementCompatibility);
+        floatingMessage.DisplayFloatingMessage(bulletPower, FloatingMessage.FloatingMessageType.PlayerDamage, isElementCompatibility);
     }
 }
 
