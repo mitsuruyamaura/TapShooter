@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,10 +31,24 @@ public class GameManager : MonoBehaviour
     private Image imgGameClear;
 
     [SerializeField]
-    private CanvasGroup canvasGroupFilter;
+    private CanvasGroup canvasGroupOpeningFilter;
 
     [SerializeField]
     private Image imgGameStart;
+
+    [SerializeField]
+    private GameObject fireworksPrefab;
+
+    [SerializeField]
+    private Transform canvasTran;
+
+    [SerializeField]
+    private Button btnRestart;
+
+    private bool isClickable;
+
+    [SerializeField]
+    private CanvasGroup canvasGroupRestartImage;
 
 
     IEnumerator Start()
@@ -43,6 +58,8 @@ public class GameManager : MonoBehaviour
         // ゲームクリアセットの初期設定
         canvasGroupGameClear.alpha = 0;
         imgGameClear.transform.localScale = Vector3.zero;
+        btnRestart.onClick.AddListener(() => OnClickRestart(canvasGroupGameClear));
+        canvasGroupRestartImage.alpha = 0;
 
         // EnemyGeneratorの初期設定
         enemyGenerator.SetUpEnemyGenerator(playerController, this);
@@ -56,6 +73,8 @@ public class GameManager : MonoBehaviour
         // ゲームスタート時の演出
         yield return StartCoroutine(Opening());
 
+        yield return new WaitForSeconds(1.5f);
+
         // 使用できるバレットの確認と更新。初期バレットをアニメさせる
         bulletSelectManager.JugdeOpenBullets();
 
@@ -66,13 +85,16 @@ public class GameManager : MonoBehaviour
     }
 
     private IEnumerator Opening() {
-        canvasGroupFilter.DOFade(0.0f, 1.0f)
-            .OnComplete(() => { imgGameStart.transform.DOLocalMoveX(0, 1.0f); });
+        canvasGroupOpeningFilter.DOFade(0.0f, 1.0f)
+            .OnComplete(() => 
+            {
+                imgGameStart.transform.DOLocalJump(Vector3.zero, 300.0f, 3, 1.5f).SetEase(Ease.Linear);
+                //imgGameStart.transform.DOLocalMoveX(0, 1.0f);
+            });
 
-        yield return new WaitForSeconds(3.0f);
-        imgGameStart.transform.DOLocalMoveX(1300, 1.0f);
-
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(3.5f);
+        imgGameStart.transform.DOLocalJump(new Vector3(1500, 0, 0), 200.0f, 3, 1.5f).SetEase(Ease.Linear);
+        //imgGameStart.transform.DOLocalMoveX(1500, 1.0f);
     }
 
     /// <summary>
@@ -115,6 +137,9 @@ public class GameManager : MonoBehaviour
 
         // すべてのバレットを押せない状態にする
         bulletSelectManager.InactivateAllBulletBtns();
+
+        // クリア演出
+        StartCoroutine(GenerateFireWorks());
     }
 
     /// <summary>
@@ -169,6 +194,12 @@ public class GameManager : MonoBehaviour
                     {
                         imgGameClear.transform.DOShakeScale(0.5f);
                         imgGameClear.transform.localScale = Vector3.one * 1.5f;
+
+                        // 画面タップを許可
+                        canvasGroupGameClear.blocksRaycasts = true;
+
+                        // Restartの点滅表示
+                        canvasGroupRestartImage.DOFade(1.0f, 1.5f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
                     });
             });
     }
@@ -176,5 +207,67 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    /// <summary>
+    /// 花火の生成
+    /// </summary>
+    private IEnumerator GenerateFireWorks() {
+        yield return new WaitForSeconds(1.5f);
+
+        for (int i = 0; i < Random.Range(5, 8); i++) {
+            GameObject fireworks = Instantiate(fireworksPrefab, canvasTran, false);
+            
+            // 色を変更         
+            ParticleSystem.MainModule main = fireworks.GetComponent<ParticleSystem>().main;
+            main.startColor = new ParticleSystem.MinMaxGradient(GetNewParticleColor());
+
+            // 位置変更
+            fireworks.transform.localPosition = new Vector3(fireworks.transform.localPosition.x + Random.Range(-500, 500), fireworks.transform.localPosition.y + Random.Range(700, 1000));
+            
+            Destroy(fireworks, 3f);
+            
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
+
+    /// <summary>
+    /// パーティクルの色をランダムで設定
+    /// </summary>
+    /// <returns></returns>
+    private Color GetNewParticleColor() {
+        int r = Random.Range(0, 255);
+        int g = Random.Range(0, 255);
+        int b = Random.Range(0, 255);
+        Color newColor = new Color32((byte)r, (byte)g, (byte)b, 255);
+        return newColor;         
+    }
+
+    /// <summary>
+    /// ゲームクリア後のタップ処理
+    /// </summary>
+    public void OnClickRestart(CanvasGroup canvasGroup) {
+        // クリック済なら処理しない
+        if (isClickable) {
+            return;
+        }
+
+        // 重複防止
+        isClickable = true;
+
+        // リスタート
+        StartCoroutine(RestartGame(canvasGroup));
+    }
+
+    /// <summary>
+    /// リスタート
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator RestartGame(CanvasGroup canvasGroup) {
+
+        canvasGroup.DOFade(0, 1.5f);
+        yield return new WaitForSeconds(1.5f);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
