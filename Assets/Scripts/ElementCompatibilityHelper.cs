@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ElementCompatibilityChecker
+public static class ElementCompatibilityHelper
 {
     public static bool GetElementCompatibility(ElementType attackElementType, ElementType defenseElementType) {
         if(attackElementType == ElementType.Black) {
