@@ -27,10 +27,10 @@ public class BulletDataSO : ScriptableObject {
         A,
         B,
         C,
-        D,
-        E,
-        F,
-        G,
+        Player_Normal,
+        Player_Blaze,
+        Player_3ways_Piercing,
+        Player_5ways_Normal,
         None
     }
 
