@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour {
     public void Shot(BulletDataSO.BulletData bulletData, Vector3 direction) {
 
         // 追尾弾のみ処理する
-        if (bulletData.bulletType == BulletDataSO.BulletType.E) {
+        if (bulletData.bulletType == BulletDataSO.BulletType.Player_Blaze) {
 
             // 発射時にゲーム内にいるエネミーの情報を取得
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -64,7 +64,7 @@ public class Bullet : MonoBehaviour {
         }
 
         // 追尾弾以外
-        if (bulletData.bulletType != BulletDataSO.BulletType.E) {
+        if (bulletData.bulletType != BulletDataSO.BulletType.Player_Blaze) {
             GetComponent<Rigidbody2D>().AddForce(direction * bulletData.bulletSpeed);
         } 
         //else {

@@ -66,18 +66,21 @@ public class PlayerController : MonoBehaviour
 
     private void GenerateBullet(Vector3 direction) {
         switch (bulletData.bulletType) {
-            case BulletDataSO.BulletType.D:
+            case BulletDataSO.BulletType.Player_Normal:
                 Instantiate(bulletPrefab, transform).Shot(bulletData, direction);
                 break;
-            case BulletDataSO.BulletType.E:
+
+            case BulletDataSO.BulletType.Player_Blaze:
                 Instantiate(bulletPrefab, transform).Shot(bulletData, direction);
                 break;
-            case BulletDataSO.BulletType.F:
+
+            case BulletDataSO.BulletType.Player_3ways_Piercing:
                 Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x -0.5f, direction.y, direction.z));
                 Instantiate(bulletPrefab, transform).Shot(bulletData, direction);
                 Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x + 0.5f, direction.y, direction.z));
                 break;
-            case BulletDataSO.BulletType.G:
+
+            case BulletDataSO.BulletType.Player_5ways_Normal:
                 Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x - 0.5f, direction.y, direction.z));
                 Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x - 0.25f, direction.y, direction.z));
                 Instantiate(bulletPrefab, transform).Shot(bulletData, direction);
