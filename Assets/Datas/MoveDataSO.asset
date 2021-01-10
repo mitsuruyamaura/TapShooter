@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe2b6934c347d54db97266b3a2bf59f, type: 3}
+  m_Name: MoveDataSO
+  m_EditorClassIdentifier: 
+  moveDataList:
+  - enemyName: 0
+    moveSpeed: 2.5
+    moveType: 0
+  - enemyName: 1
+    moveSpeed: 4
+    moveType: 1
+  - enemyName: 6
+    moveSpeed: 3
+    moveType: 2
