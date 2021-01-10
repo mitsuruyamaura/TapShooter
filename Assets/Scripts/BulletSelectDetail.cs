@@ -104,7 +104,7 @@ public class BulletSelectDetail : MonoBehaviour
             Debug.Log(GetStateBulletCostPayment());
 
             // EXP減算
-            bulletSelectManager.UpdateTotalExp(-bulletData.openExp);
+            bulletSelectManager.UpdateTotalExp(-bulletData.openExp, BulletSelectManager.ExpType.BulletCost);
 
             // コストEXP非表示
             //txtOpenExpValue.enabled = false;     

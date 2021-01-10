@@ -156,7 +156,7 @@ public class EnemyGenerator : MonoBehaviour
     /// </summary>
     /// <param name="exp"></param>
     public void UpdateExp(int exp) {
-        bulletSelectManager.UpdateTotalExp(exp);
+        bulletSelectManager.UpdateTotalExp(exp, BulletSelectManager.ExpType.EnemyExp);
     }
 
     public void ClearEnemyBullet() {

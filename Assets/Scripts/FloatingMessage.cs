@@ -20,7 +20,7 @@ public class FloatingMessage : MonoBehaviour
     /// ダメージ表示の制御
     /// </summary>
     /// <param name="damage"></param>
-    public void DisplayFloatingDamage(int damage, FloatingMessageType floatingMessageType = FloatingMessageType.EnemyDamage, bool isElementCompatibility = false) {
+    public void DisplayFloatingMessage(int damage, FloatingMessageType floatingMessageType = FloatingMessageType.EnemyDamage, bool isElementCompatibility = false) {
         transform.localPosition = new Vector3(transform.localPosition.x + Random.Range(-20, 20), transform.localPosition.y + Random.Range(-10, 10), 0);
 
         txtFloatingMessage.text = damage.ToString();
