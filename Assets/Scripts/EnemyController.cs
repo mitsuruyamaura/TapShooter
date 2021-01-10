@@ -37,6 +37,9 @@ public class EnemyController : MonoBehaviour
 
     private int hp;
 
+    [SerializeField]
+    private GameObject bulletEffectPrefab;
+
     //void Start() {
         
     //    maxHp = enemyData.hp;
@@ -57,6 +60,7 @@ public class EnemyController : MonoBehaviour
             Debug.Log(col.gameObject);
             if (col.gameObject.TryGetComponent(out Bullet bullet)) {
                 UpdateHp(bullet);
+                GenerateBulletEffect(col.gameObject.transform);
             }
         }
     }
@@ -66,14 +70,14 @@ public class EnemyController : MonoBehaviour
     /// </summary>
     /// <param name="bullet"></param>
     private void UpdateHp(Bullet bullet) {
-        if(ElementCompatibilityChecker.GetElementCompatibility(bullet.bulletData.elementType, enemyData.elementType)) {
+        if(ElementCompatibilityHelper.GetElementCompatibility(bullet.bulletData.elementType, enemyData.elementType) == true) {
             hp -= bullet.bulletData.bulletPower * 2;
             Debug.Log("Element 相性　良");
 
-            CreateFloatingDamage(bullet.bulletData.bulletPower * 2, true);
+            CreateFloatingMessageToDamage(bullet.bulletData.bulletPower * 2, true);
         } else {
             hp -= bullet.bulletData.bulletPower;
-            CreateFloatingDamage(bullet.bulletData.bulletPower, false);
+            CreateFloatingMessageToDamage(bullet.bulletData.bulletPower, false);
         }
 
         //hp -= bullet.bulletData.bulletPower;
@@ -95,6 +99,12 @@ public class EnemyController : MonoBehaviour
 
             Destroy(gameObject);
         }
+
+        // ノーマル弾の場合
+        if (bullet.bulletData.bulletType == BulletDataSO.BulletType.Player_Normal || bullet.bulletData.bulletType == BulletDataSO.BulletType.Player_5ways_Normal) {
+            // 破壊
+            Destroy(bullet.gameObject);
+        }
     }
 
     /// <summary>
@@ -112,9 +122,9 @@ public class EnemyController : MonoBehaviour
     /// ダメージ表示の生成
     /// </summary>
     /// <param name="bulletPower"></param>
-    private void CreateFloatingDamage(int bulletPower, bool isElementCompatibility) {
+    private void CreateFloatingMessageToDamage(int bulletPower, bool isElementCompatibility) {
         FloatingMessage floatingMessage = Instantiate(floatingMessagePrefab, floatingDamageTran);
-        floatingMessage.DisplayFloatingDamage(bulletPower, FloatingMessage.FloatingMessageType.EnemyDamage ,isElementCompatibility);
+        floatingMessage.DisplayFloatingMessage(bulletPower, FloatingMessage.FloatingMessageType.EnemyDamage , isElementCompatibility);
     }
 
     /// <summary>
@@ -180,5 +190,11 @@ public class EnemyController : MonoBehaviour
     /// <param name="enemyGenerator"></param>
     public void AdditionalInitialize(EnemyGenerator enemyGenerator) {
         this.enemyGenerator = enemyGenerator;
+    }
+
+    private void GenerateBulletEffect(Transform tran) {
+        GameObject effect = Instantiate(bulletEffectPrefab, tran, false);
+        effect.transform.SetParent(GameObject.FindGameObjectWithTag("BulletPool").transform);
+        Destroy(effect, 3.0f);
     }
 }
