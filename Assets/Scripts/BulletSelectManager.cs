@@ -29,6 +29,11 @@ public class BulletSelectManager : MonoBehaviour
     [SerializeField]
     private GameManager gameManager;
 
+    public enum ExpType {
+        BulletCost,
+        EnemyExp
+    }
+
     //void Start()
     //{
     //    GenerateBulletSelectDetail();
@@ -67,12 +72,16 @@ public class BulletSelectManager : MonoBehaviour
     }
 
     /// <summary>
-    /// EXP加算
+    /// EXPの値と表示更新
     /// </summary>
-    public void UpdateTotalExp(int exp) {
+    public void UpdateTotalExp(int exp, ExpType expType) {
 
-        // フロート表示
-        CreateFlotingExp(exp);
+        // EXP の種類によりフロート表示
+        if (expType == ExpType.BulletCost) {
+            CreateFlotingMessageToBulletCost(exp, FloatingMessage.FloatingMessageType.BulletCost);
+        } else {
+            CreateFlotingMessageToBulletCost(exp, FloatingMessage.FloatingMessageType.GetExp);
+        }
 
         // EXP加算
         //totalExp += exp;
@@ -150,9 +159,9 @@ public class BulletSelectManager : MonoBehaviour
     /// 獲得したEXPをフロート表示
     /// </summary>
     /// <param name="exp"></param>
-    private void CreateFlotingExp(int exp) {
+    private void CreateFlotingMessageToBulletCost(int exp, FloatingMessage.FloatingMessageType floatingMessageType) {
         FloatingMessage floatingMessage = Instantiate(floatingMessagePrefab, txtTotalExp.transform, false);
-        floatingMessage.DisplayFloatingDamage(exp, FloatingMessage.FloatingMessageType.GetExp);
+        floatingMessage.DisplayFloatingMessage(exp, floatingMessageType, false);
     }
 
     /// <summary>
