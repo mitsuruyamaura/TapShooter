@@ -6,7 +6,9 @@ TagManager:
   tags:
   - Bullet
   - Enemy
-  - BulletPool
+  - FxTemporaire
+  - TreasureBox
+  - TemporaryObjectContainer
   layers:
   - Default
   - TransparentFX

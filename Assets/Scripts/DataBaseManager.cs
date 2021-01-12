@@ -13,6 +13,10 @@ public class DataBaseManager : MonoBehaviour
 
     public BulletDataSO bulletDataSO;
 
+    private Transform temporaryObjectContainerTran;
+
+    private Transform treasureBoxIconTran;
+
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -20,6 +24,19 @@ public class DataBaseManager : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
+        Initialize();
+    }
+
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    public void Initialize() {
+        // TODO 何かあれば追加
+
+        // シーンの開始に取得(シングルトンクラスであるため、再スタートした場合にも取得する)
+        temporaryObjectContainerTran = GameObject.FindGameObjectWithTag("TemporaryObjectContainer").transform;
+
+        treasureBoxIconTran = GameObject.FindGameObjectWithTag("TreasureBox").transform;
     }
 
     /// <summary>
@@ -69,5 +86,21 @@ public class DataBaseManager : MonoBehaviour
             return element.elementSprite;
         }
         return bulletDataSO.elementList[0].elementSprite;
+    }
+
+    /// <summary>
+    /// 宝箱アイコンの位置情報の取得
+    /// </summary>
+    /// <returns></returns>
+    public Transform GetTresureBoxIconTransfrom() {
+        return treasureBoxIconTran;
+    }
+
+    /// <summary>
+    /// 一時オブジェクト(バレット、エフェクト、宝箱など)の格納用ゲームオブジェクトの位置情報の取得
+    /// </summary>
+    /// <returns></returns>
+    public Transform GetTemporaryObjectContainerTransform() {
+        return temporaryObjectContainerTran;
     }
 }

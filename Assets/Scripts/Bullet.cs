@@ -60,7 +60,8 @@ public class Bullet : MonoBehaviour {
         }
 
         if (bulletData.liberalType == BulletDataSO.LiberalType.BOSS) {
-            transform.SetParent(GameObject.FindGameObjectWithTag("BulletPool").transform);
+            //transform.SetParent(GameObject.FindGameObjectWithTag("BulletPool").transform);
+            transform.SetParent(DataBaseManager.instance.GetTemporaryObjectContainerTransform());
         }
 
         // ’Ç”ö’eˆÈŠO

@@ -40,6 +40,13 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private GameObject bulletEffectPrefab;
 
+    [SerializeField]
+    private TreasureBox treasureBoxPrefab;
+
+    [Header("宝箱の出現確率"), Range(0, 100)]
+    public int appearTreasureRate;
+
+
     //void Start() {
         
     //    maxHp = enemyData.hp;
@@ -84,6 +91,9 @@ public class EnemyController : MonoBehaviour
         
         Debug.Log("Hp : " + hp);
 
+        // TODO SE
+
+
         //CreateFloatingDamage(bullet.bulletData.bulletPower);
         UpDateDisplayHpGauge();
 
@@ -96,6 +106,13 @@ public class EnemyController : MonoBehaviour
 
             // EXP加算
             enemyGenerator.UpdateExp(enemyData.exp);
+
+            // 宝箱生成判定
+            if (JudgeGenerateTrasureBox()) {
+                
+                // 宝箱生成
+                GenerateTreasureBox();
+            }
 
             Destroy(gameObject);
         }
@@ -192,9 +209,31 @@ public class EnemyController : MonoBehaviour
         this.enemyGenerator = enemyGenerator;
     }
 
+    /// <summary>
+    /// 被バレット時のヒット演出用のエフェクト生成
+    /// </summary>
+    /// <param name="tran"></param>
     private void GenerateBulletEffect(Transform tran) {
         GameObject effect = Instantiate(bulletEffectPrefab, tran, false);
-        effect.transform.SetParent(GameObject.FindGameObjectWithTag("BulletPool").transform);
+        //effect.transform.SetParent(GameObject.FindGameObjectWithTag("BulletPool").transform);
+        effect.transform.SetParent(DataBaseManager.instance.GetTemporaryObjectContainerTransform());
         Destroy(effect, 3.0f);
+    }
+
+    /// <summary>
+    /// 宝箱が出現するか判定
+    /// </summary>
+    /// <returns></returns>
+    private bool JudgeGenerateTrasureBox() {
+        return Random.Range(0, 100) < appearTreasureRate ? true : false;
+    }
+
+    /// <summary>
+    /// 宝箱生成
+    /// </summary>
+    private void GenerateTreasureBox() {
+        TreasureBox treasureBox = Instantiate(treasureBoxPrefab, transform, false);
+        treasureBox.transform.SetParent(DataBaseManager.instance.GetTemporaryObjectContainerTransform());
+        treasureBox.SetUpTreasureBox(enemyGenerator);
     }
 }
