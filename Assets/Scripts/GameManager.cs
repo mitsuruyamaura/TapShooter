@@ -50,6 +50,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private CanvasGroup canvasGroupRestartImage;
 
+    [SerializeField]
+    private Text txtTresureBoxCount;
+
+    private int tresureBoxCount;
+
 
     IEnumerator Start()
     {
@@ -178,7 +183,7 @@ public class GameManager : MonoBehaviour
             enemyGenerator.ClearEnemyList();
 
             // 敵のバレットをすべて削除
-            enemyGenerator.ClearEnemyBullet();
+            enemyGenerator.DestroyTemporaryObjectContainer();
         }
     }
 
@@ -268,6 +273,28 @@ public class GameManager : MonoBehaviour
         canvasGroup.DOFade(0, 1.5f);
         yield return new WaitForSeconds(1.5f);
 
+        // イベントにイベントハンドラーを追加
+        SceneManager.sceneLoaded += SceneLoaded;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    /// <summary>
+    /// イベントハンドラー。シーン遷移時に自動的に実行される
+    /// </summary>
+    /// <param name="nextScene"></param>
+    /// <param name="mode"></param>
+    private void SceneLoaded(Scene nextScene, LoadSceneMode mode) {
+        DataBaseManager.instance.Initialize();
+    }
+
+    /// <summary>
+    /// 宝箱の獲得数を加算して表示更新
+    /// </summary>
+    public void UpdateTreasureBoxCount() {
+        tresureBoxCount++;
+        Debug.Log("現在の獲得宝箱数 : " + tresureBoxCount);
+
+        txtTresureBoxCount.text = tresureBoxCount.ToString();
     }
 }

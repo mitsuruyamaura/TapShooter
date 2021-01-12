@@ -599,7 +599,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &138555128
 RectTransform:
   m_ObjectHideFlags: 0
@@ -912,7 +912,7 @@ GameObject:
   m_Component:
   - component: {fileID: 251175631}
   m_Layer: 5
-  m_Name: TreasureIconTran
+  m_Name: TreasureBoxIconTran
   m_TagString: TreasureBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1173,7 +1173,6 @@ MonoBehaviour:
   floatingMessagePrefab: {fileID: 323937506041907095, guid: 12cf7cafede3a5b48a6faa72504edc13, type: 3}
   defenseBase: {fileID: 1986013665}
   gameManager: {fileID: 97355945}
-  openSE: {fileID: 8300000, guid: 7b7add4195caf264ea215250d2234d24, type: 3}
 --- !u!4 &438747827
 Transform:
   m_ObjectHideFlags: 0
@@ -2302,8 +2301,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1140757338}
   m_Layer: 5
-  m_Name: BulletPool
-  m_TagString: BulletPool
+  m_Name: TemporaryObjectContainer
+  m_TagString: TemporaryObjectContainer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3683,8 +3682,6 @@ MonoBehaviour:
   moveDataSO: {fileID: 11400000, guid: c83e1ee0ed3b0704f900adaa56d92a4d, type: 2}
   enemyDataSO: {fileID: 11400000, guid: 52c74d02ce65125449d6afb9ff955b50, type: 2}
   bulletDataSO: {fileID: 11400000, guid: 789ea9efb6d5e06439e1e1099cd73b9a, type: 2}
-  bulletPoolTran: {fileID: 0}
-  treasureBoxTran: {fileID: 0}
 --- !u!4 &1697125562
 Transform:
   m_ObjectHideFlags: 0

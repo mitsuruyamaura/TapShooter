@@ -159,7 +159,18 @@ public class EnemyGenerator : MonoBehaviour
         bulletSelectManager.UpdateTotalExp(exp, BulletSelectManager.ExpType.EnemyExp);
     }
 
-    public void ClearEnemyBullet() {
-        Destroy(GameObject.FindGameObjectWithTag("BulletPool"));
+    /// <summary>
+    /// 一時オブジェクト(バレット、エフェクト、宝箱)をすべて破棄
+    /// </summary>
+    public void DestroyTemporaryObjectContainer() {
+        //Destroy(GameObject.FindGameObjectWithTag("BulletPool"));
+        Destroy(DataBaseManager.instance.GetTemporaryObjectContainerTransform().gameObject);
+    }
+
+    /// <summary>
+    /// 宝箱の獲得数の更新をGameManagerに通知
+    /// </summary>
+    public void NoticeTeasureBoxCountToGameManager() {
+        gameManager.UpdateTreasureBoxCount();
     }
 }

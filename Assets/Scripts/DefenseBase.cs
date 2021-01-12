@@ -84,8 +84,11 @@ public class DefenseBase : MonoBehaviour {
 
             // 種類に合わせたエフェクトを生成
             GameObject effect = Instantiate(effectPrefab, col.gameObject.transform, false);
-            effect.transform.SetParent(GameObject.FindGameObjectWithTag("BulletPool").transform);
+            //effect.transform.SetParent(GameObject.FindGameObjectWithTag("BulletPool").transform);
+            effect.transform.SetParent(DataBaseManager.instance.GetTemporaryObjectContainerTransform());
             Destroy(effect, 3.0f);
+
+            // TODO SE
 
             durability = Mathf.Clamp(durability, 0, maxDurability);
             UpdateDisplayDurability();
