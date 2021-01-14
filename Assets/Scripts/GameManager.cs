@@ -55,10 +55,18 @@ public class GameManager : MonoBehaviour
 
     private int tresureBoxCount;
 
+    [SerializeField]
+    private GameObject charaObj;
+
 
     IEnumerator Start()
     {
+        // 準備開始
         isSetUpEnd = false;
+
+        // キャラの現在のサイズを保持し、一時、見えなくする
+        float scaleX = charaObj.transform.localScale.x;
+        charaObj.transform.localScale = Vector3.zero;
 
         // ゲームクリアセットの初期設定
         canvasGroupGameClear.alpha = 0;
@@ -78,6 +86,10 @@ public class GameManager : MonoBehaviour
         // ゲームスタート時の演出
         yield return StartCoroutine(Opening());
 
+        // キャラ表示(スタート演出の途中でキャラをタイミングよく表示させる)
+        charaObj.transform.DOScale(Vector3.one * scaleX, 1.0f).SetEase(Ease.Linear);
+        
+        // スタート演出が終了するまで一時処理を中断して待機(この間にキャラは元の大きさに戻っている)
         yield return new WaitForSeconds(1.5f);
 
         // 使用できるバレットの確認と更新。初期バレットをアニメさせる
@@ -86,6 +98,7 @@ public class GameManager : MonoBehaviour
         // 準備完了状態にして、画面のタップを受け付ける
         isSetUpEnd = true;
 
+        // エネミーの生成の監視スタート
         StartCoroutine(ObservateGenerateEnemyState());
     }
 

@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
 
     public BulletDataSO.BulletType currentBulletType;
 
+    [SerializeField]
+    private CharaAnimationController charaAnim;
 
 
     void Start()
@@ -51,6 +53,8 @@ public class PlayerController : MonoBehaviour
 
             // ÉoÉåÉbÉgê∂ê¨
             GenerateBullet(direction);
+
+            charaAnim.PlayAnimation(CharaAnimationController.attackParameter);
         }    
     }
 

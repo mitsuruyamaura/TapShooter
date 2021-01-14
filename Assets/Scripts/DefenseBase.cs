@@ -40,6 +40,11 @@ public class DefenseBase : MonoBehaviour {
     [SerializeField]
     private Button btnRestartFilter;
 
+    [SerializeField]
+    private CharaAnimationController charaAnim;
+
+
+
 
     void Start() {
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
@@ -90,12 +95,18 @@ public class DefenseBase : MonoBehaviour {
 
             // TODO SE
 
+            // アニメ再生
+            charaAnim.PlayAnimation(CharaAnimationController.hitParameter);
+
             durability = Mathf.Clamp(durability, 0, maxDurability);
             UpdateDisplayDurability();
 
             if (durability <= 0 && gameManager.isGameUp == false) {
                 Debug.Log("Game Over");
                 gameManager.SwitchGameUp(true);
+
+                // アニメ再生
+                charaAnim.PlayAnimation(CharaAnimationController.downParameter);
 
                 DisplayGameOver();
             }
