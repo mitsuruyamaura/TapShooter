@@ -58,11 +58,18 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject charaObj;
 
+    [SerializeField]
+    private DefenseBase defenseBase;
 
     IEnumerator Start()
     {
         // 準備開始
         isSetUpEnd = false;
+
+        SoundManager.instance.PlayBGM(SoundManager.BGM_Type.Main);
+
+        // DefenseBase の設定を行う
+        defenseBase.SetUpDefenseBase(this);
 
         // キャラの現在のサイズを保持し、一時、見えなくする
         float scaleX = charaObj.transform.localScale.x;
@@ -87,10 +94,22 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(Opening());
 
         // キャラ表示(スタート演出の途中でキャラをタイミングよく表示させる)
-        charaObj.transform.DOScale(Vector3.one * scaleX, 1.0f).SetEase(Ease.Linear);
+        Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(charaObj.transform.DOScale(Vector3.one * 1.3f, 0.5f).SetEase(Ease.Linear));
+        sequence.Append(charaObj.transform.DOScale(Vector3.one * scaleX, 0.05f).SetEase(Ease.Linear));
         
+        //charaObj.transform.DOScale(Vector3.one * scaleX, 1.0f).SetEase(Ease.Linear);
+
+        Debug.Log(charaObj.transform.localScale.x);
+
         // スタート演出が終了するまで一時処理を中断して待機(この間にキャラは元の大きさに戻っている)
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.0f);
+
+        // 開始時のSE
+        SoundManager.instance.SetStartVoice((SoundManager.StartVoice)Random.Range(0, SoundManager.instance.StartVoice_Clips.Length));
+
+        yield return new WaitForSeconds(0.5f);
 
         // 使用できるバレットの確認と更新。初期バレットをアニメさせる
         bulletSelectManager.JugdeOpenBullets();
@@ -158,6 +177,11 @@ public class GameManager : MonoBehaviour
 
         // クリア演出
         StartCoroutine(GenerateFireWorks());
+
+        yield return new WaitForSeconds(7.5f);
+
+        // クリアボイス再生
+        SoundManager.instance.SetGameUpVoice(SoundManager.GameUpVoice.Win_1, 0.5f);
     }
 
     /// <summary>
@@ -168,6 +192,12 @@ public class GameManager : MonoBehaviour
         Debug.Log(waveCount);
         if (waveCount == maxWaveCount - 1) {
             Debug.Log("Boss");
+
+            // ボスのBGM再生
+            SoundManager.instance.PlayBGM(SoundManager.BGM_Type.Boss);
+
+            // ボス前の警告ボイス再生
+            SoundManager.instance.SetWarningVoice((SoundManager.WarningVoice)Random.Range(0, SoundManager.instance.WarningVoice_Clips.Length));
 
             // ボス生成
             StartCoroutine(enemyGenerator.GenerateBoss());
@@ -212,6 +242,9 @@ public class GameManager : MonoBehaviour
                     {
                         imgGameClear.transform.DOShakeScale(0.5f);
                         imgGameClear.transform.localScale = Vector3.one * 1.5f;
+
+                        // ゲームクリアBGM
+                        SoundManager.instance.PlaySE(SoundManager.SE_Type.GameClear, 0.1f);
 
                         // 画面タップを許可
                         canvasGroupGameClear.blocksRaycasts = true;
@@ -298,6 +331,7 @@ public class GameManager : MonoBehaviour
     /// <param name="nextScene"></param>
     /// <param name="mode"></param>
     private void SceneLoaded(Scene nextScene, LoadSceneMode mode) {
+        Debug.Log("リロード時に呼ばれるよ");
         DataBaseManager.instance.Initialize();
     }
 

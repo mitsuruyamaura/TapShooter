@@ -44,18 +44,16 @@ public class DefenseBase : MonoBehaviour {
     private CharaAnimationController charaAnim;
 
 
+    //void Start() {
+    //    gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
 
+    //    canvasGroupGameOver.DOFade(0, 0.1f);
+    //    maxDurability = durability;
 
-    void Start() {
-        gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+    //    UpdateDisplayDurability();
 
-        canvasGroupGameOver.DOFade(0, 0.1f);
-        maxDurability = durability;
-
-        UpdateDisplayDurability();
-
-        btnRestartFilter.onClick.AddListener(() => gameManager.OnClickRestart(canvasGroupGameOver));
-    }
+    //    btnRestartFilter.onClick.AddListener(() => gameManager.OnClickRestart(canvasGroupGameOver));
+    //}
 
     /// <summary>
     /// 耐久度の表示更新
@@ -70,7 +68,9 @@ public class DefenseBase : MonoBehaviour {
         if (col.gameObject.tag == "Enemy") {
 
             col.gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+
             GameObject effectPrefab = null;
+
             if (col.gameObject.TryGetComponent(out Bullet bullet)) {
                 // 相性確認してダメージ処理
                 Damage(bullet.bulletData.bulletPower, bullet.bulletData.elementType);
@@ -79,7 +79,7 @@ public class DefenseBase : MonoBehaviour {
 
                 effectPrefab = bulletHitEffectPrefab;
 
-            } else if (col.gameObject.TryGetComponent(out EnemyController enemyController)) {
+            } else if (col.gameObject.TryGetComponent(out Enemy enemyController)) {
                 Damage(enemyController.enemyData.power, enemyController.enemyData.elementType);
 
                 Debug.Log("Enemy");
@@ -93,11 +93,6 @@ public class DefenseBase : MonoBehaviour {
             effect.transform.SetParent(DataBaseManager.instance.GetTemporaryObjectContainerTransform());
             Destroy(effect, 3.0f);
 
-            // TODO SE
-
-            // アニメ再生
-            charaAnim.PlayAnimation(CharaAnimationController.hitParameter);
-
             durability = Mathf.Clamp(durability, 0, maxDurability);
             UpdateDisplayDurability();
 
@@ -105,11 +100,27 @@ public class DefenseBase : MonoBehaviour {
                 Debug.Log("Game Over");
                 gameManager.SwitchGameUp(true);
 
-                // アニメ再生
+                // 無音
+                SoundManager.instance.PlayBGM(SoundManager.BGM_Type.Silence);
+
+                // ゲームオーバーのBGM
+                SoundManager.instance.PlaySE(SoundManager.SE_Type.GameOver);
+
+                // ゲームオーバー時のボイス再生
+                SoundManager.instance.SetGameUpVoice((SoundManager.GameUpVoice)Random.Range(0, SoundManager.instance.GameUpVoice_Clips.Length - 1));
+
+                // ダウンアニメ再生
                 charaAnim.PlayAnimation(CharaAnimationController.downParameter);
 
                 DisplayGameOver();
+            } else {
+                // 被ダメージ時のヒットボイス再生
+                SoundManager.instance.SetHitVoice((SoundManager.HitVoice)Random.Range(0, SoundManager.instance.HitVoice_Clips.Length));
+
+                // ヒットアニメ再生
+                charaAnim.PlayAnimation(CharaAnimationController.hitParameter);
             }
+
             Destroy(col.gameObject);
         }
     }
@@ -167,6 +178,30 @@ public class DefenseBase : MonoBehaviour {
     private void CreateFloatingDamage(int bulletPower, bool isElementCompatibility) {
         FloatingMessage floatingMessage = Instantiate(floatingMessagePrefab, floatingMessageTran);
         floatingMessage.DisplayFloatingMessage(bulletPower, FloatingMessage.FloatingMessageType.PlayerDamage, isElementCompatibility);
+    }
+
+    /// <summary>
+    /// DefenseBaseの設定
+    /// </summary>
+    public void SetUpDefenseBase(GameManager gameManager) {
+
+
+        // Start 移植
+        this.gameManager = gameManager;
+        //gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+
+        // GameData から 耐久力をもらって設定する
+        durability = GameData.instance.GetDurability();
+
+        Debug.Log(durability); 
+
+        canvasGroupGameOver.DOFade(0, 0.1f);
+        maxDurability = durability;
+
+        UpdateDisplayDurability();
+
+        btnRestartFilter.onClick.AddListener(() => gameManager.OnClickRestart(canvasGroupGameOver));
+
     }
 }
 
