@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
     public Bullet bulletPrefab;
 
     public BulletDataSO.BulletData bulletData;
@@ -18,14 +17,20 @@ public class PlayerController : MonoBehaviour
     private CharaAnimationController charaAnim;
 
 
-    void Start()
-    {
+    void Start() {
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         bulletData = DataBaseManager.instance.GetPlayerBulletData(currentBulletType);
     }
 
+    public void SetUpPlayer(GameManager gameManager) {  // <= Start の代わり
+        this.gameManager = gameManager;
+    }
 
     void Update() {
+
+        //ShotDebug();
+
+
         // ゲームクリア、ゲームオーバーのいずれかなら
         if (gameManager.isGameUp) {
             return;
@@ -54,8 +59,12 @@ public class PlayerController : MonoBehaviour
             // バレット生成
             GenerateBullet(direction);
 
+            // 攻撃時のボイス再生
+            SoundManager.instance.SetAttackVoice((SoundManager.AttackVoice)Random.Range(0, SoundManager.instance.AttackVoice_Clips.Length));
+
+            // 攻撃アニメ再生
             charaAnim.PlayAnimation(CharaAnimationController.attackParameter);
-        }    
+        }
     }
 
     /// <summary>
@@ -68,28 +77,32 @@ public class PlayerController : MonoBehaviour
         bulletData = DataBaseManager.instance.GetPlayerBulletData(currentBulletType);
     }
 
+    /// <summary>
+    /// バレットの生成
+    /// </summary>
+    /// <param name="direction"></param>
     private void GenerateBullet(Vector3 direction) {
         switch (bulletData.bulletType) {
             case BulletDataSO.BulletType.Player_Normal:
-                Instantiate(bulletPrefab, transform).Shot(bulletData, direction);
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, direction);
                 break;
 
             case BulletDataSO.BulletType.Player_Blaze:
-                Instantiate(bulletPrefab, transform).Shot(bulletData, direction);
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, direction);
                 break;
 
             case BulletDataSO.BulletType.Player_3ways_Piercing:
-                Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x -0.5f, direction.y, direction.z));
-                Instantiate(bulletPrefab, transform).Shot(bulletData, direction);
-                Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x + 0.5f, direction.y, direction.z));
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, new Vector3(direction.x - 0.5f, direction.y, direction.z));
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, direction);
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, new Vector3(direction.x + 0.5f, direction.y, direction.z));
                 break;
 
             case BulletDataSO.BulletType.Player_5ways_Normal:
-                Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x - 0.5f, direction.y, direction.z));
-                Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x - 0.25f, direction.y, direction.z));
-                Instantiate(bulletPrefab, transform).Shot(bulletData, direction);
-                Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x + 0.25f, direction.y, direction.z));
-                Instantiate(bulletPrefab, transform).Shot(bulletData, new Vector3(direction.x + 0.5f, direction.y, direction.z));
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, new Vector3(direction.x - 0.5f, direction.y, direction.z));
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, new Vector3(direction.x - 0.25f, direction.y, direction.z));
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, direction);
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, new Vector3(direction.x + 0.25f, direction.y, direction.z));
+                Instantiate(bulletPrefab, transform).ShotBullet(bulletData, new Vector3(direction.x + 0.5f, direction.y, direction.z));
                 break;
         }
 
@@ -99,6 +112,43 @@ public class PlayerController : MonoBehaviour
 
         if (tapCount >= 50) {
             Debug.Log("バースト状態");
+        }
+    }
+
+    private void Generate(Vector3 direction) {
+        //Debug.Log("生成する位置情報 : " + direction);
+
+        Bullet bulletObj = Instantiate(bulletPrefab, transform);
+        //bulletObj.transform.localPosition = direction;
+
+        //bulletObj.ShotBullet(transform.up);
+
+        bulletObj.ShotBullet(direction);
+    }
+
+    private void ShotDebug() {
+        if (Input.GetMouseButtonDown(0)) {
+            //Instantiate(bulletPrefab, transform).ShotBullet();
+            // 画面をタップ(クリック)した位置をカメラのスクリーン座標の情報を通じてワールド座標に変換
+            Vector3 tapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            //Debug.Log("タップした位置情報 : " + tapPos);
+
+            // 方向を計算
+            Vector3 direction2 = tapPos - transform.position;
+
+            //Debug.Log("方向 : " + direction2);
+
+            // 方向の情報から、不要な Z成分(Z軸情報) の除去を行う
+            //direction2 = Vector3.Scale(direction2, new Vector3(1, 1, 0));
+
+
+            // 正規化処理を行い、単位ベクトルとする(方向の情報は持ちつつ、距離による速度差をなくして一定値にする)
+            //direction2 = direction2.normalized;
+
+            //Debug.Log("正規化処理後の方向 : " + direction2);
+
+            Generate(direction2);
         }
     }
 }

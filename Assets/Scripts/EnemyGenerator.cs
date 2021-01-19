@@ -6,7 +6,7 @@ using DG.Tweening;
 public class EnemyGenerator : MonoBehaviour
 {
     [SerializeField]
-    private EnemyController enemyPrefab;
+    private Enemy enemyPrefab;
 
     [SerializeField]
     private Bullet bulletPrefab;
@@ -14,7 +14,7 @@ public class EnemyGenerator : MonoBehaviour
     //[SerializeField]
     private PlayerController playerController;
 
-    public List<EnemyController> enemyList = new List<EnemyController>();
+    public List<Enemy> enemyList = new List<Enemy>();
 
     public int generateCount;
 
@@ -88,7 +88,7 @@ public class EnemyGenerator : MonoBehaviour
             return;
         }
             
-        EnemyController enemy = Instantiate(enemyPrefab, transform);
+        Enemy enemy = Instantiate(enemyPrefab, transform);
         enemy.Inisialize(playerController, DataBaseManager.instance.GetEnemyBulletData(enemyData), enemyData, enemyData.bulletType == BulletDataSO.BulletType.None ? null : bulletPrefab);
         enemy.AdditionalInitialize(this);
         enemyList.Add(enemy);
@@ -129,7 +129,7 @@ public class EnemyGenerator : MonoBehaviour
         yield return StartCoroutine(DisplayAlert());
 
         EnemyDataSO.EnemyData enemyData = DataBaseManager.instance.GetEnemyData(EnemyDataSO.EnemyType.Boss);
-        EnemyController enemy = Instantiate(enemyPrefab, transform);
+        Enemy enemy = Instantiate(enemyPrefab, transform);
         enemy.Inisialize(playerController, DataBaseManager.instance.GetEnemyBulletData(enemyData), enemyData, enemyData.bulletType == BulletDataSO.BulletType.None ? null : bulletPrefab);
         enemy.AdditionalInitialize(this);
         enemyList.Add(enemy);

@@ -48,8 +48,8 @@ public class TreasureBox : MonoBehaviour
         // 出現エフェクト生成
         CreateAppearEffect();
 
-        // TODO 出現SE
-
+        // 宝箱出現時のSE再生
+        SoundManager.instance.PlaySE(SoundManager.SE_Type.Treasure_Set);
     }
 
     /// <summary>
@@ -91,7 +91,8 @@ public class TreasureBox : MonoBehaviour
                 GameObject effect = Instantiate(getEffectPrefab, targetTran, false);
                 Destroy(effect, 3.0f);
 
-                // TODO 獲得SE
+                // 獲得SE
+                SoundManager.instance.PlaySE(SoundManager.SE_Type.Treasure_Get);
 
                 Destroy(gameObject);
             });

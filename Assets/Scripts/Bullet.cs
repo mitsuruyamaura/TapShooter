@@ -6,21 +6,29 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Bullet : MonoBehaviour {
 
+    [Header("バレットの速度")]
+    public float bulletSpeed;  // 不要になる
+
+    [Header("バレットの攻撃力")]
+    public int bulletPower;
+
+    [HideInInspector]
     public BulletDataSO.BulletData bulletData;
 
-    [SerializeField]
+    [SerializeField,HideInInspector]
     private Image imgBullet;
 
     private bool isTarget;
 
     private Vector3 nearPos;
 
+
     /// <summary>
     /// バレットの制御
     /// </summary>
     /// <param name="bulletData"></param>
     /// <param name="direction"></param>
-    public void Shot(BulletDataSO.BulletData bulletData, Vector3 direction) {
+    public void ShotBullet(BulletDataSO.BulletData bulletData, Vector3 direction) {
 
         // 追尾弾のみ処理する
         if (bulletData.bulletType == BulletDataSO.BulletType.Player_Blaze) {
@@ -79,6 +87,12 @@ public class Bullet : MonoBehaviour {
     }
 
     private void Update() {
+        //if (Input.GetMouseButtonDown(0)) {
+        //    ShotBullet();
+
+        //    Debug.Log("左クリック確認");
+        //}
+
         if (!isTarget) {
             return;
         }
@@ -98,5 +112,16 @@ public class Bullet : MonoBehaviour {
         //Position.y += bulletData.bulletSpeed * Mathf.Sin(rad);
         //// 現在の位置に加算減算を行ったPositionを代入する
         //transform.localPosition = Position;
+    }
+
+    private void Start() {
+        //GetComponent<Rigidbody2D>().AddForce(transform.right * 300);
+        //Debug.Log("発射");
+    }
+
+    public void ShotBullet(Vector3 direction) {
+        GetComponent<Rigidbody2D>().AddForce(direction * bulletSpeed);
+        //Debug.Log("発射速度 : " + bulletSpeed);
+        Destroy(gameObject, 5.0f);
     }
 }
