@@ -62,7 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -127,11 +127,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bdf1cfa4eb1664c89bd0c9a0002c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletSpeed: 300
+  bulletPower: 10
   bulletData:
     bulletSpeed: 0
     bulletPower: 0
     loadingTime: 0
     bulletType: 0
-    sprite: {fileID: 0}
+    btnSprite: {fileID: 0}
     liberalType: 0
+    openExp: 0
+    elementType: 0
+    launchTime: 0
+    bulletSprite: {fileID: 0}
   imgBullet: {fileID: 5965983155416220945}

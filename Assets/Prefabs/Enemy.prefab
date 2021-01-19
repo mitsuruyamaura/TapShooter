@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4725010894196346239}
   - component: {fileID: 4725010894196346237}
-  - component: {fileID: 4725010894196346236}
+  - component: {fileID: 6050182548873607704}
   m_Layer: 5
   m_Name: Enemy
   m_TagString: Enemy
@@ -56,7 +56,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 100, y: 1}
   m_Direction: 0
---- !u!114 &4725010894196346236
+--- !u!114 &6050182548873607704
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,14 +65,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4725010894196346238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d2bc381d0addc4b9d465e10bf5c3ad, type: 3}
+  m_Script: {fileID: 11500000, guid: e9093f28f336f8246a85ee43218b3e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 7767945454978911253, guid: 8dd30384b3a3ca54096c7d896acc0549, type: 3}
+  bulletPrefab: {fileID: 7767945454978911253, guid: ad6398208bc30e2408c9adfa128f8f59, type: 3}
   enemyData:
     no: 0
     enemyType: 0
-    hp: 50
+    hp: 0
     power: 0
     bulletType: 0
     enemySprite: {fileID: 0}
@@ -87,7 +87,6 @@ MonoBehaviour:
   bulletEffectPrefab: {fileID: 9118173916307626387, guid: 54225e1aa038e194888fb897d261b428, type: 3}
   treasureBoxPrefab: {fileID: 9017784727831512210, guid: 25e76144dc88c2c408f963fe228f6101, type: 3}
   appearTreasureRate: 50
-  hitSE: {fileID: 8300000, guid: 5ec4bb7f7f32a5445a1905eedca7218e, type: 3}
 --- !u!1 &4725010894336348471
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +99,7 @@ GameObject:
   - component: {fileID: 4725010894336348466}
   - component: {fileID: 4725010894336348469}
   m_Layer: 5
-  m_Name: Image
+  m_Name: imgEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

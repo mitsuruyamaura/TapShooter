@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
     public Bullet bulletPrefab;
 
     public BulletDataSO.BulletData bulletData;
@@ -18,8 +17,7 @@ public class PlayerController : MonoBehaviour
     private CharaAnimationController charaAnim;
 
 
-    void Start()
-    {
+    void Start() {
         gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         bulletData = DataBaseManager.instance.GetPlayerBulletData(currentBulletType);
     }
@@ -29,29 +27,9 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update() {
-        if (Input.GetMouseButtonDown(0)) {
-            //Instantiate(bulletPrefab, transform).ShotBullet();
-            // 画面をタップ(クリック)した位置をカメラのスクリーン座標の情報を通じてワールド座標に変換
-            Vector3 tapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            //Debug.Log("タップした位置情報 : " + tapPos);
+        //ShotDebug();
 
-            // 方向を計算
-            Vector3 direction2 = tapPos - transform.position;
-
-            //Debug.Log("方向 : " + direction2);
-
-            // 方向の情報から、不要な Z成分(Z軸情報) の除去を行う
-            //direction2 = Vector3.Scale(direction2, new Vector3(1, 1, 0));
-
-
-            // 正規化処理を行い、単位ベクトルとする(方向の情報は持ちつつ、距離による速度差をなくして一定値にする)
-            //direction2 = direction2.normalized;
-
-            //Debug.Log("正規化処理後の方向 : " + direction2);
-
-            Generate(direction2);
-        }
 
         // ゲームクリア、ゲームオーバーのいずれかなら
         if (gameManager.isGameUp) {
@@ -86,7 +64,7 @@ public class PlayerController : MonoBehaviour
 
             // 攻撃アニメ再生
             charaAnim.PlayAnimation(CharaAnimationController.attackParameter);
-        }    
+        }
     }
 
     /// <summary>
@@ -146,5 +124,31 @@ public class PlayerController : MonoBehaviour
         //bulletObj.ShotBullet(transform.up);
 
         bulletObj.ShotBullet(direction);
+    }
+
+    private void ShotDebug() {
+        if (Input.GetMouseButtonDown(0)) {
+            //Instantiate(bulletPrefab, transform).ShotBullet();
+            // 画面をタップ(クリック)した位置をカメラのスクリーン座標の情報を通じてワールド座標に変換
+            Vector3 tapPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            //Debug.Log("タップした位置情報 : " + tapPos);
+
+            // 方向を計算
+            Vector3 direction2 = tapPos - transform.position;
+
+            //Debug.Log("方向 : " + direction2);
+
+            // 方向の情報から、不要な Z成分(Z軸情報) の除去を行う
+            //direction2 = Vector3.Scale(direction2, new Vector3(1, 1, 0));
+
+
+            // 正規化処理を行い、単位ベクトルとする(方向の情報は持ちつつ、距離による速度差をなくして一定値にする)
+            //direction2 = direction2.normalized;
+
+            //Debug.Log("正規化処理後の方向 : " + direction2);
+
+            Generate(direction2);
+        }
     }
 }
