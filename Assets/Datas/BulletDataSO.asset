@@ -23,6 +23,7 @@ MonoBehaviour:
     elementType: 0
     launchTime: 0
     bulletSprite: {fileID: 21300000, guid: 3737d112c07c89c47bf542c17a923efc, type: 3}
+    discription: "\u30DC\u30B9\u7528"
   - bulletSpeed: 100
     bulletPower: 20
     loadingTime: 5
@@ -33,6 +34,7 @@ MonoBehaviour:
     elementType: 0
     launchTime: 0
     bulletSprite: {fileID: 0}
+    discription: "\u30CE\u30FC\u30DE\u30EB\u30FB\u30A8\u30CD\u30DF\u30FC\u7528"
   - bulletSpeed: 100
     bulletPower: 10
     loadingTime: 7
@@ -43,6 +45,7 @@ MonoBehaviour:
     elementType: 1
     launchTime: 0
     bulletSprite: {fileID: 21300000, guid: d24f48ee62c5afc4ba6caeec66ae94e2, type: 3}
+    discription: "\u30CE\u30FC\u30DE\u30EB\u30FB\u30A8\u30CD\u30DF\u30FC\u7528"
   - bulletSpeed: 200
     bulletPower: 20
     loadingTime: 7
@@ -53,6 +56,7 @@ MonoBehaviour:
     elementType: 4
     launchTime: 5
     bulletSprite: {fileID: 21300000, guid: c942109b78497be4994b5821a3878167, type: 3}
+    discription: "\u57FA\u672C\u30D0\u30EC\u30C3\u30C8\u306E\uFF11\u3064"
   - bulletSpeed: 100
     bulletPower: 15
     loadingTime: 7
@@ -63,6 +67,7 @@ MonoBehaviour:
     elementType: 1
     launchTime: 5
     bulletSprite: {fileID: 21300000, guid: 71fbce08b1d61f847a886d21ea90fb2e, type: 3}
+    discription: "\u30A8\u30CD\u30DF\u30FC\u3092\u8FFD\u5C3E\u3059\u308B\u3002\u3057\u3070\u3089\u304F\u305D\u306E\u5834\u306B\u6B8B\u308A\u7D9A\u3051\u3066\u653B\u6483\u3067\u304D\u308B"
   - bulletSpeed: 300
     bulletPower: 15
     loadingTime: 7
@@ -73,6 +78,7 @@ MonoBehaviour:
     elementType: 3
     launchTime: 5
     bulletSprite: {fileID: 21300000, guid: 407402e0fa937ad408a0a112b5531c75, type: 3}
+    discription: "\u6247\u72B6\uFF13\u65B9\u5411\u306B\u767A\u5C04\u3055\u308C\u308B\u3002"
   - bulletSpeed: 150
     bulletPower: 20
     loadingTime: 7
@@ -83,6 +89,7 @@ MonoBehaviour:
     elementType: 2
     launchTime: 5
     bulletSprite: {fileID: 21300000, guid: bc31c18bcd8fe3141b21d3b1716bf030, type: 3}
+    discription: "\u6247\u72B6\uFF15\u65B9\u5411\u306B\u767A\u5C04\u3055\u308C\u308B\u3002"
   elementList:
   - no: 0
     elementSprite: {fileID: -451546867780355519, guid: ead0911ac885af74c863bb7a2d4cec07, type: 3}

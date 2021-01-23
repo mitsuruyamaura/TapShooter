@@ -66,7 +66,7 @@ public class ChooseBulletPopUp : MonoBehaviour
         // 生成
         ChooseBulletDetail chooseBulletDetailCopy = Instantiate(chooseBulletDetail, bulletDetailTran, false);
 
-        chooseBulletDetail.SetUpChooseBullet(this, ChooseBulletDetail.DetailStateType.Choosing, chooseBulletDetailCopy.bulletData);
+        chooseBulletDetailCopy.SetUpChooseBullet(this, ChooseBulletDetail.DetailStateType.Choosing, chooseBulletDetailCopy.bulletData);
         choosingBulletDetailsList.Add(chooseBulletDetailCopy);
     }
 
@@ -75,6 +75,7 @@ public class ChooseBulletPopUp : MonoBehaviour
     /// </summary>
     /// <param name="chooseBulletDetail"></param>
     public void DeleteChoosingBulletList(ChooseBulletDetail chooseBulletDetail) {
+        // 登録リストから、選択したバレットの情報を検索する
         foreach (ChooseBulletDetail chooseBullet in unselectedBulletDetailsList) {
             if (chooseBullet.bulletData.bulletType == chooseBulletDetail.bulletData.bulletType) {
 
@@ -85,8 +86,11 @@ public class ChooseBulletPopUp : MonoBehaviour
                 chooseBullet.SetState(ChooseBulletDetail.DetailStateType.Unselected);
             }
         }
-        Destroy(chooseBulletDetail);
 
+        // 選択リストから選択したバレットを削除
+        Destroy(chooseBulletDetail.gameObject);
+
+        // 選択したバレットをリストから削除
         choosingBulletDetailsList.Remove(chooseBulletDetail);
     }
 
@@ -103,5 +107,18 @@ public class ChooseBulletPopUp : MonoBehaviour
         }
 
         choosingBulletDetailsList.Clear();
+    }
+
+    /// <summary>
+    /// 選択中の StateType を Unselected に戻す
+    /// </summary>
+    public void ResetStateTypeAllBtn(ChooseBulletDetail.DetailStateType newStateType) {
+        for (int i = 0; i < unselectedBulletDetailsList.Count; i++) {
+            if (unselectedBulletDetailsList[i].stateType == ChooseBulletDetail.DetailStateType.Selected) {
+                unselectedBulletDetailsList[i].SetState(newStateType);
+
+                unselectedBulletDetailsList[i].SwitchFrame(false);
+            }
+        }
     }
 }
