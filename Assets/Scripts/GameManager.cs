@@ -61,6 +61,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private DefenseBase defenseBase;
 
+    [SerializeField]
+    private ChooseBulletPopUp chooseBulletPopUp;
+
+    public bool isChooseBulletEnd;
+
     IEnumerator Start()
     {
         // 準備開始
@@ -84,7 +89,16 @@ public class GameManager : MonoBehaviour
         // EnemyGeneratorの初期設定
         enemyGenerator.SetUpEnemyGenerator(playerController, this);
 
-        // バレットのボタンを生成
+        // バレット選択ポップアップを利用するか、初期設定バレットですぐにゲーム開始する確認
+        if (!GameData.instance.isDebugDefaultBulletCreate) {
+            // 暗転を解除
+            canvasGroupOpeningFilter.DOFade(0.0f, 1.0f);
+
+            // バレット選択ポップアップを開き、選択できるバレットをアイテムバレットとして生成してゲームに使用するバレットの登録開始。登録終了するまでここで停止
+            yield return StartCoroutine(OpenChooseBulletPopUp());
+        }
+
+        // バレット選択用のボタンを生成
         yield return StartCoroutine(bulletSelectManager.GenerateBulletSelectDetail(playerController));
 
         // 使用できるバレットの確認と更新
@@ -101,7 +115,7 @@ public class GameManager : MonoBehaviour
         
         //charaObj.transform.DOScale(Vector3.one * scaleX, 1.0f).SetEase(Ease.Linear);
 
-        Debug.Log(charaObj.transform.localScale.x);
+        //Debug.Log(charaObj.transform.localScale.x);
 
         // スタート演出が終了するまで一時処理を中断して待機(この間にキャラは元の大きさに戻っている)
         yield return new WaitForSeconds(1.0f);
@@ -119,6 +133,31 @@ public class GameManager : MonoBehaviour
 
         // エネミーの生成の監視スタート
         StartCoroutine(ObservateGenerateEnemyState());
+    }
+
+    /// <summary>
+    /// バレット選択ポップアップの制御
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator OpenChooseBulletPopUp() {
+
+        // バレット選択ポップアップ表示
+        chooseBulletPopUp.CreateChooseBulletDetails(this);
+
+        // バレットの選択が終了するまで待機
+        yield return new WaitUntil(() => isChooseBulletEnd);
+    }
+
+    /// <summary>
+    /// 選択したバレットの登録と選択完了処理
+    /// </summary>
+    public void SetBulletDatas(List<BulletDataSO.BulletData> bulletDatas) {
+
+        // GameData に選択したバレットデータを登録
+        GameData.instance.SetChooseBulletDatas(bulletDatas);
+
+        // バレットの選択完了して次の処理へ移る
+        isChooseBulletEnd = true;
     }
 
     private IEnumerator Opening() {
