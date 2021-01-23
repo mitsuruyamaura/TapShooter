@@ -20,6 +20,7 @@ public class BulletDataSO : ScriptableObject {
         public ElementType elementType;
         public float launchTime;
         public Sprite bulletSprite;
+        public string discription;
     }
 
     [Serializable]
