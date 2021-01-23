@@ -10,7 +10,16 @@ public class ChooseBulletDetail : MonoBehaviour
     private Button btnChooseBullet;
 
     [SerializeField]
-    private Image imgBullet;
+    private Image imgBulletBtn;               // バレット画像
+
+    [SerializeField]
+    private Image imgElementTypeBackground;   // 属性画像
+
+    [SerializeField]
+    private Text txtOpenExpValue;             // EXP表示
+
+    [SerializeField]
+    private Image imgFrame;                   // ボタンのフレーム
 
     public enum DetailStateType {
         Unselected,   // 未選択
@@ -37,12 +46,16 @@ public class ChooseBulletDetail : MonoBehaviour
 
         this.bulletData = bulletData;
 
-        imgBullet.sprite = this.bulletData.btnSprite;
+        imgBulletBtn.sprite = this.bulletData.btnSprite;
 
         // 属性を足す
+        imgElementTypeBackground.sprite = DataBaseManager.instance.GetElementTypeSprite(this.bulletData.elementType);
 
         // EXP表示を足す
+        txtOpenExpValue.text = this.bulletData.openExp.ToString();
 
+        // 選択中フレームを隠す
+        SwitchFrame(false);
     }
 
     /// <summary>
@@ -53,10 +66,19 @@ public class ChooseBulletDetail : MonoBehaviour
         // 未選択
         if (stateType == DetailStateType.Unselected) {
 
+            // すべてのバレットのボタンを確認して、Selected を Unselected にする
+            chooseBulletPopUp.ResetStateTypeAllBtn(DetailStateType.Unselected);
+
             // 選択中
             SetState(DetailStateType.Selected);
 
+            // 説明表示
             chooseBulletPopUp.UpdateDisplayBulletPerformance(bulletData);
+
+            // ボタンの背景の色を変えるか、フレームに色を付ける
+            SwitchFrame(true);
+
+
 
         // 選択中
         } else if (stateType == DetailStateType.Selected){
@@ -67,7 +89,9 @@ public class ChooseBulletDetail : MonoBehaviour
 
             ActivateBtn(false);
 
-        // 
+            SwitchFrame(false);
+
+        // 登録中
         } else if (stateType == DetailStateType.Choosing) {
             chooseBulletPopUp.DeleteChoosingBulletList(this);
         }
@@ -86,5 +110,9 @@ public class ChooseBulletDetail : MonoBehaviour
     /// </summary>
     public void SetState(DetailStateType newStateType) {
         stateType = newStateType;
+    }
+
+    public void SwitchFrame(bool isSwitch) {
+        imgFrame.enabled = isSwitch;
     }
 }
