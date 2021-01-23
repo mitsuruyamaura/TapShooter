@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 4323710663793849670}
   - component: {fileID: 4052640822800601367}
   m_Layer: 5
-  m_Name: imgBulletBtn
+  m_Name: imgBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 5306725610541945217}
   - component: {fileID: 7342073117105190534}
   m_Layer: 5
-  m_Name: ChooseBulletSelectDetail
+  m_Name: ItemBulletButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -457,12 +457,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c18c7923296e4449bb896baeebce70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btnChooseBullet: {fileID: 5306725610541945217}
-  imgBulletBtn: {fileID: 4052640822800601367}
+  btnItemBullet: {fileID: 5306725610541945217}
+  imgBullet: {fileID: 4052640822800601367}
   imgElementTypeBackground: {fileID: 4599402039346342206}
   txtOpenExpValue: {fileID: 4813569301375241585}
   imgFrame: {fileID: 411515194079325315}
-  stateType: 0
+  itemBulletStateType: 0
   bulletData:
     bulletSpeed: 0
     bulletPower: 0

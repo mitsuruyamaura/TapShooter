@@ -39,12 +39,31 @@ public class BulletSelectManager : MonoBehaviour
     //    GenerateBulletSelectDetail();
     //}
 
+    /// <summary>
+    /// バレット選択用ボタンの生成
+    /// </summary>
+    /// <param name="playerController"></param>
+    /// <returns></returns>
     public IEnumerator GenerateBulletSelectDetail(PlayerController playerController) {
-        BulletDataSO.BulletData[] bulletDatas = DataBaseManager.instance.bulletDataSO.bulletDataList.Where((x) => x.liberalType == BulletDataSO.LiberalType.Player).ToArray();
 
-        for (int i = 0; i < bulletDatas.Length; i++) {
+        List<BulletDataSO.BulletData> bulletDatas = new List<BulletDataSO.BulletData>();
+
+        // 初期バレット生成用のデバッグスイッチがオンなら
+        if (GameData.instance.isDebugDefaultBulletCreate) {
+            bulletDatas = DataBaseManager.instance.bulletDataSO.bulletDataList.Where((x) => x.liberalType == BulletDataSO.LiberalType.Player).ToList();
+        } else {
+            // オフなら、バレット選択ポップアップで選択したバレットを利用する
+            bulletDatas = GameData.instance.chooseBulletsList;
+        }
+
+        for (int i = 0; i < bulletDatas.Count; i++) {
+            // バレットボタン生成
             BulletSelectDetail bulletSelectDetail = Instantiate(bulletSelectDetailPrefab, bulletTran, false);
+
+            // バレットボタンの設定
             bulletSelectDetail.SetUpBulletSelectDetail(bulletDatas[i], playerController, this);
+
+            // リストに追加
             bulletSelectDetailList.Add(bulletSelectDetail);
             yield return new WaitForSeconds(0.25f);
         }
